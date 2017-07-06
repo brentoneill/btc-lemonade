@@ -3,11 +3,9 @@ import { Route, IndexRoute } from 'react-router';
 
 import App from './components/App';
 import Layout from './components/Layout';
-
 import Dashboard from './components/Dashboard';
 import Stats from './components/Stats';
 import Settings from './components/Settings';
-
 
 // When user is at "/", show the "PostsIndex" component
 export default (

@@ -2,22 +2,26 @@ import * as React from 'react';
 import axios from 'axios';
 import { Card, Feed, Header, Button, Icon, Modal } from 'semantic-ui-react';
 
+import { store } from '../';
+import Socket from '../services/Socket';
+import { stringToColour } from '../util';
+
 import './styles/TransactionFeed.scss';
 
 interface ITransactionFeedProps {
-    transactions?: any;
+    transactions?: ITransaction[];
 }
 
 interface ITransactionFeedState {
-    transactions?: any;
+    transactions?: ITransaction[];
 }
 
-// Create the coinbase client
-const CoinbaseClient = require('coinbase').Client;
-const apiKey = 'nxv5LXg8Ge4DnKuM';
-const apiSecret = '6wQhqnPCvsqVCJ6uCvsg15Elt3ScvYIy';
-const version = null;
-const ApiClient = new CoinbaseClient({ apiKey, apiSecret, version });
+export interface ITransaction {
+    amount: number;
+    timestamp: string | number;
+    payee: string;
+    address: string;
+}
 
 export default class TransactionFeed extends React.Component<ITransactionFeedProps, ITransactionFeedState> {
 
@@ -28,83 +32,34 @@ export default class TransactionFeed extends React.Component<ITransactionFeedPro
         };
     }
 
-    componentWillMount() {
-        axios.get(`http://btc.blockr.io/api/v1/address/info/${'11AJbsFZ64EpEfS5UAjAfcUG8pH8Jn3rn1F'}`)
-            .then(res => {
-                console.log(res);
-            }, error => {
-                console.log(error);
+    renderTransactions(transactions: ITransaction[]): JSX.Element {
+        if (transactions && transactions.length) {
+            transactions.map((tx, i) => {
+                return (
+                    <Feed.Event key={i}>
+                        <Feed.Label>
+                            <div style={{ backgroundColor: stringToColour(tx.address) }} className={'circle'}></div>
+                        </Feed.Label>
+                        <Feed.Content date={tx.timestamp} summary={tx.payee} />
+                    </Feed.Event>
+                );
             });
-
-        // ApiClient.getAccount('primary', function(err, account) {
-        //     console.log(err);
-        //     account.createAddress(function(err, addr) {
-        //         console.log(addr);
-        //         const address = addr;
-        //     }, );
-        // });
+        } else {
+            return (
+                <p className="text-center"><i>Sorry, no transactions to display. </i></p>
+            );
+        }
     }
 
-    generateAddress() {
-        return ApiClient.getAccount('primary', function(err, account) {
-            account.createAddress(function(err, addr) {
-                console.log(addr);
-                const address = addr;
-            });
-        });
-    }
-
-    render(): JSX.Element | null {
-        // Button that triggers the modal
-        const trigger = (
-            <Button primary
-                    floated={'right'}
-                    labelPosition={'left'}
-                    label={'Generate New Address'}
-                    icon={'add square'} />
-        );
-
-        // <Feed>
-        //     {this.state.transactions && this.state.transactions.map((tx, i) => {
-        //         const { date, amount, payee } = tx;
-        //         const summary = `You were paid ${amount} by ${payee}`;
-        //         return (
-        //             <Feed.Event key={i}>
-        //                 <Feed.Label>
-        //                     <div className={'circle'}></div>
-        //                 </Feed.Label>
-        //                 <Feed.Content date={date} summary={summary} />
-        //             </Feed.Event>
-        //         );
-        //     })}
-        // </Feed>
-
+    render(): JSX.Element {
         return (
             <div className="TransactionFeed">
                 <Card fluid>
                     <Card.Content>
                         <Header as={'h2'} color={'blue'}>Transaction Feed</Header>
-                        <Modal trigger={trigger}
-                            dimmer={'blurring'}
-                            basic
-                            size="small"
-                            closeOnDimmerClick={true}>
-                            <Header icon="plus" content="Generate a New Address" />
-                            <Modal.Content>
-                                <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
-                            </Modal.Content>
-                            <Modal.Actions>
-                                <Button basic color="red" inverted>
-                                    <Icon name="remove" /> No
-                                </Button>
-                                <Button color="green" inverted>
-                                    <Icon name="checkmark" /> Yes
-                                </Button>
-                            </Modal.Actions>
-                        </Modal>
-                    </Card.Content>
-                    <Card.Content>
-
+                        <Feed>
+                            {this.renderTransactions(this.state.transactions)}
+                        </Feed>
                     </Card.Content>
                 </Card>
             </div>

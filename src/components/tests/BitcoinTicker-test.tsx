@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import BitcoinTicker from '../BitcoinTicker';
 
 const defaultProps = {
-
+    currencyPair: 'btcusd'
 };
 
 describe('<BitcoinTicker /> component', () => {

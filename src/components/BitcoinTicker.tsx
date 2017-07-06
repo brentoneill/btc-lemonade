@@ -10,7 +10,7 @@ import { updateBTC } from '../actions';
 import './styles/BitcoinTicker.scss';
 
 export interface IBitcoinTickerProps {
-    currencyPair?: string;
+    currencyPair: string; // ltcusd or btcusd
     animateOnUpdate?: boolean;
     showTimestamp?: boolean;
     onChange?: (order: any) => void;
@@ -42,24 +42,29 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
     }
 
     componentWillMount() {
+        const { currencyPair } = this.props;
         // Initialize the price
-        axios.get(`https://chain.so/api/v2/get_price/BTC`)
+        axios.get(`https://www.bitstamp.net/api/v2/ticker/${currencyPair}`)
             .then(res => {
-                const priceData = res.data.data.prices.find(data => {
-                    return data.exchange === 'coinbase';
-                });
-                this.setState({ currentPrice: priceData.price, time: priceData.time }, () => {
-
-                });
+                console.log(res);
+                this.setState({ currentPrice: res.data.last, time: res.data.timestamp });
             });
 
+        let channelName: string;
+        if (currencyPair === 'btcusd') {
+            channelName = 'trade';
+        } else {
+            channelName = `live_trades_${currencyPair}`;
+        }
+
         // Bind an event to the 'trade' event on the live_trades channel
-        this.tradesChannel.bind('trade', data => {
+        this.tradesChannel.bind(channelName, data => {
             if (this.props.onChange && this.state.currentPrice !== data.price ) {
                 this.props.onChange(data);
             }
 
             this.setState({ currentPrice: data.price, updating: true, time: parseInt(data.timestamp) }, () => {
+                console.log(data);
                 store.dispatch(updateBTC(data));
                 setTimeout(() => {
                     this.setState({ updating: false });
@@ -96,12 +101,22 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
     }
 
     render(): JSX.Element {
-        const { updating, currencyPair, currentPrice, time } = this.state;
-        const { showTimestamp } = this.props;
+        const { updating, currentPrice, time } = this.state;
+        const { showTimestamp, currencyPair } = this.props;
 
         const cssClasses = ['BitcoinTicker'];
         const timeStamp = this.renderTimestamp(showTimestamp, time);
-        const iconName = !this.props.currencyPair ? 'bitcoin' : 'viacoin';
+
+        let iconName;
+        switch (currencyPair) {
+            case 'ltcusd':
+                iconName = 'viacoin';
+                break;
+            default:
+            case 'btcusd':
+                iconName = 'bitcoin';
+                break;
+        }
 
         let card: JSX.Element;
 
@@ -124,8 +139,8 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
                 <Card fluid>
                     <Card.Content>
                         <Statistic color="blue">
-                            <Statistic.Label>1<Icon name={iconName} /></Statistic.Label>
                             <Statistic.Value>{currencyFormatter.format(currentPrice, { code: 'USD' })}</Statistic.Value>
+                            <Statistic.Label>1<Icon name={iconName} /></Statistic.Label>
                         </Statistic>
                     </Card.Content>
                     <Card.Content extra>

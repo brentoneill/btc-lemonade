@@ -1,6 +1,7 @@
 .column {
     .ui.card {
         margin-bottom: 2em;
+
         &:last-child {
             margin-bottom: 2em;
         }
@@ -47,7 +48,12 @@ a {
 
 .content.extra {
     .ui.fluid.input {
-        input { border-top-left-radius: 0; }
-        button { border-top-right-radius: 0 !important; }
+        input {
+            border-top-left-radius: 0;
+        }
+
+        button {
+            border-top-right-radius: 0 !important;
+        }
     }
 }

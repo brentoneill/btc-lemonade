@@ -28,6 +28,12 @@
             color: $gray-light;
             opacity: .7;
             transition: opacity .15s ease-out;
+
+            &.active {
+                opacity: 1;
+                color: #FFF;
+                font-weight: bold;
+            }
         }
 
         a:hover {

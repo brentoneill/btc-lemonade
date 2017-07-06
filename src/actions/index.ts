@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const FETCH_PRICES = 'FETCH_PRICES';
+export const FETCH_ADDRESS = 'FETCH_ADDRESS';
 export const ADD_BLOCK = 'ADD_BLOCK';
 export const UPDATE_BTC = 'UPDATE_BTC';
 export const ADD_ADDRESS = 'ADD_ADDRESS';
@@ -11,6 +12,14 @@ export function fetchPrices() {
     const request = axios.get(`https://chain.so/api/v2/get_price/BTC`);
     return {
         type: FETCH_PRICES,
+        payload: request
+    };
+}
+
+export function fetchAddressInfo(address) {
+    const request = axios.get(`https://blockchain.info/rawaddr/${address}`);
+    return {
+        type: FETCH_ADDRESS,
         payload: request
     };
 }

@@ -59,6 +59,11 @@ module.exports = function(config) {
             resolve: {
                 extensions: ['', '.js', '.jsx', '.ts', '.tsx']
             },
+            node: {
+                fs: 'empty',
+                net: 'empty',
+                tls: 'empty'
+            }
         },
 
         webpackServer: {
@@ -110,7 +115,7 @@ module.exports = function(config) {
         // - Safari (only Mac)
         // - PhantomJS
         // - IE (only Windows)
-        browsers: ['ChromeHeadless'],
+        browsers: ['Chrome'],
 
         // If browser does not capture in given timeout [ms], kill it
         captureTimeout: 60000,

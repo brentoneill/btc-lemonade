@@ -7,7 +7,7 @@ const INITIAL_STATE = {
     transactions: [],
     addresses: [
         {
-            address: '11AJbsFZ64EpEfS5UAjAfcUG8pH8Jn3rn1F',
+            address: '1FztQpGD4fb45H32DhPtbM2g2HrH1f3TVG',
             name: 'My Bitcoin Wallet'
         },
         {
