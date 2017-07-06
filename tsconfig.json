@@ -1,0 +1,28 @@
+{
+    "compileOnSave": false,
+    "buildOnSave": false,
+    "compilerOptions": {
+        "baseUrl": "./app/",
+        "jsx": "react",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "lib": ["es6", "es2016", "dom"],
+        "target": "es5",
+        "sourceMap": true,
+        "allowJs": true,
+        "outDir": "./nil"
+    },
+    "exclude": [
+        "app/components",
+        "node_modules",
+        "!node_modules/@types",
+        "test/e2e/node_modules"
+    ],
+    "types": [
+        "node",
+        "jasmine"
+  ],
+    "atom": {
+        "rewriteTsconfig": false
+    }
+}

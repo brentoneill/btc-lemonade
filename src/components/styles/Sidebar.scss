@@ -1,0 +1,41 @@
+@import './variables';
+
+.Sidebar--header {
+    border-bottom: 2px solid $blue;
+    padding: $padding-sm;
+
+    .ui.header {
+        color: $gray-light;
+        font-weight: 400;
+        letter-spacing: .8px;
+    }
+}
+
+.Sidebar--navigation {
+    .ui.list:first-child {
+        margin-top: $padding-md * 2;
+
+        .item {
+            padding: $padding-md 0;
+            .content {
+                width: 100%;
+            }
+        }
+
+        .icon,
+        a {
+            font-weight: 300;
+            color: $gray-light;
+            opacity: .7;
+            transition: opacity .15s ease-out;
+        }
+
+        a:hover {
+            opacity: 1;
+        }
+
+        .icon {
+            font-size: 20px;
+        }
+    }
+}

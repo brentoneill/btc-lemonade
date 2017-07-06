@@ -1,0 +1,28 @@
+@import './variables';
+
+.BitcoinTicker {
+    .content {
+        text-align: center;
+    }
+    
+    .extra {
+        text-align: left;
+    }
+
+    .ui.card {
+        min-height: 120px !important;
+    }
+
+    h2.header {
+        margin-bottom: 4px;
+        font-weight: 300;
+    }
+}
+
+.BitcoinTicker--translation {
+    color: $gray;
+    font-size: 18px;
+    .icon {
+        vertical-align: middle;
+    }
+}

@@ -1,0 +1,53 @@
+.column {
+    .ui.card {
+        margin-bottom: 2em;
+        &:last-child {
+            margin-bottom: 2em;
+        }
+    }
+}
+
+a {
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+}
+
+.block {
+    display: block;
+}
+
+.card {
+    .ui.header {
+        font-weight: 300;
+    }
+}
+
+.arrow-left {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-right: 20px solid $bg-color;
+}
+
+.circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #2185D0;
+    margin-top: 4px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.content.extra {
+    .ui.fluid.input {
+        input { border-top-left-radius: 0; }
+        button { border-top-right-radius: 0 !important; }
+    }
+}

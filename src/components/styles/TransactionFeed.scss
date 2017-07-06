@@ -1,0 +1,17 @@
+@import './variables.scss';
+
+.TransactionFeed {
+    h2.header {
+        display: inline-block;
+        float: left;
+        margin-top: 4px !important;
+    }
+
+    .ui.feed>.event {
+        padding-left: $padding-md;
+    }
+
+    .ui.feed>.event>.label {
+        width: auto;
+    }
+}

@@ -1,0 +1,33 @@
+@import './variables';
+
+.Layout {
+
+}
+
+.Layout--sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $sidebar-width;
+    height: 100%;
+    background-color: $blue-dark;
+    padding: $padding-md;
+}
+
+.Layout--content {
+    position: absolute;
+    top: 0;
+    left: $sidebar-width;
+    width: calc(100% - #{$sidebar-width});
+    height: 100%;
+    background-color: $bg-color;
+}
+
+.Layout--body {
+    padding: $padding-md * 2;
+}
+
+html,
+body {
+    background: $bg-color;
+}

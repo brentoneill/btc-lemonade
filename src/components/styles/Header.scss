@@ -1,0 +1,9 @@
+@import './variables';
+
+.Header {
+    border-bottom: 2px solid $gray-light;
+    padding: $padding-md;
+    h3 {
+        color: $gray;
+    }
+}
