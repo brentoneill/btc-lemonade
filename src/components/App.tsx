@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import './styles/main.scss';
+import 'react-redux-toastr/src/styles/index';
 
 interface IAppProps {}
 

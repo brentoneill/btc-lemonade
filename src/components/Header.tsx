@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { Button, Modal, Icon, Input } from 'semantic-ui-react';
+import {toastr} from 'react-redux-toastr';
 
 import { generateNewAddress, addAddress } from '../actions';
 
@@ -18,6 +19,7 @@ interface IProps {
 interface IState {
     modalOpen?: boolean;
     addressLabel?: string;
+    apiKey?: string;
 }
 
 class Header extends React.PureComponent<IProps, IState> {
@@ -26,32 +28,43 @@ class Header extends React.PureComponent<IProps, IState> {
         super(props);
         this.state = {
             modalOpen: false,
-            addressLabel: ''
+            addressLabel: '',
+            apiKey: ''
         };
     }
 
     @autobind
     handleConfirmGenerateAddress() {
-        this.props.generateNewAddress(this.state.addressLabel)
+        const { apiKey, addressLabel } = this.state;
+        this.props.generateNewAddress(apiKey, addressLabel)
             .then(action => {
                 if (action.payload && action.payload.data) {
+                    toastr.success('Address generated!', 'You will now see the address in your address list.');
                     this.props.addAddress(action.payload.data.data);
+                } else {
+                    toastr.warning('Could not generate', 'For some reason, we couldn\'t generate the address for you. Please try again.');
                 }
                 this.resetState();
             }, err => {
                 console.error(err);
                 this.resetState();
+                toastr.warning('Could not generate', 'For some reason, we couldn\'t generate the address for you. Please try again.');
             });
     }
 
     @autobind
     resetState() {
-        this.setState({ modalOpen: false, addressLabel: '' });
+        this.setState({ modalOpen: false, addressLabel: '', apiKey: '' });
     }
 
     @autobind
     onLabelChange(event: React.ChangeEvent<HTMLInputElement>, data): void {
         this.setState({ addressLabel: data.value });
+    }
+
+    @autobind
+    onApiKeyChange(event: React.ChangeEvent<HTMLInputElement>, data): void {
+        this.setState({ apiKey: data.value });
     }
 
     render() {
@@ -73,18 +86,23 @@ class Header extends React.PureComponent<IProps, IState> {
                     size="small"
                     closeOnDimmerClick={true}>
                     <Modal.Content>
-                        <h3 className="header">Do you wish to create a new bitcoin wallet address?</h3>
-                        <p>If so, please enter custom label (optional) and click "YES" below.</p>
+                        <h3 className="header">Do you wish to create a new bitcoin wallet address (block.io only)?</h3>
+                        <p>If so, please enter your block.io API Key and a custom label (optional) and click "YES" below.</p>
+                        <Input fluid
+                               value={this.state.apiKey}
+                               onChange={this.onApiKeyChange}
+                               placeholder="e.g., d83f-9301-959c-cbe3"/>
+                               <br />
                         <Input fluid
                                value={this.state.addressLabel}
                                onChange={this.onLabelChange}
-                               placeholder="My new address"/>
+                               placeholder="e.g., My-new-address"/>
                     </Modal.Content>
                     <Modal.Actions>
                         <Button basic color="red" inverted onClick={this.resetState}>
                             Cancel
                         </Button>
-                        <Button color="green" inverted onClick={this.handleConfirmGenerateAddress}>
+                        <Button disabled={!this.state.apiKey.length} color="green" inverted onClick={this.handleConfirmGenerateAddress}>
                             <Icon name="plus square" /> Generate New Address
                         </Button>
                     </Modal.Actions>

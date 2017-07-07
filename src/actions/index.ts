@@ -50,9 +50,9 @@ export function addAddress(address): IAction {
     };
 }
 
-export function generateNewAddress(label?: string): IAction {
+export function generateNewAddress(apiKey: string, label?: string): IAction {
     let labelString = (label && label.length) ? `&label=${label}` : '';
-    const request = axios.get(`https://block.io/api/v2/get_new_address/?api_key=d86f-9001-959c-cbe3${labelString}`);
+    const request = axios.get(`https://block.io/api/v2/get_new_address/?api_key=${apiKey}${labelString}`);
 
     return {
         type: GENERATE_ADDRESS,

@@ -51,7 +51,7 @@ export default class AddressInput extends React.Component<IProps, IState> {
                         <Input fluid
                                value={this.state.newAddress}
                                onChange={this.onAddressChange}
-                               action={{ color: 'blue', labelPosition: 'right', icon: 'plus', content: 'Add', onClick: this.handleAddAddressClick }}
+                               action={{ disabled: this.state.newAddress.length < 25, color: 'blue', labelPosition: 'right', icon: 'plus', content: 'Add', onClick: this.handleAddAddressClick }}
                                placeholder="Some hash..."/>
                     </Card.Content>
                 </Card>

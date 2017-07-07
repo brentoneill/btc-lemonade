@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { Router, browserHistory } from 'react-router';
+import ReduxToastr from 'react-redux-toastr'
 
 import routes from './Routes';
 import reducers from './reducers';
@@ -19,6 +20,16 @@ export const store = createStoreWithMiddleware(reducers);
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={browserHistory} routes={routes} />
+    <div>
+        <Router history={browserHistory} routes={routes} />
+        <ReduxToastr
+            timeOut={4000}
+            newestOnTop={false}
+            preventDuplicates
+            position="bottom-right"
+            transitionIn="fadeIn"
+            transitionOut="fadeOut"
+            progressBar/>
+    </div>
   </Provider>
   , document.querySelector('#app'));

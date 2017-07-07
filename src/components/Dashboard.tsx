@@ -4,13 +4,13 @@ import axios from 'axios';
 import autobind from 'autobind-decorator';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import BitcoinTicker from './BitcoinTicker';
 import TransactionFeed, { ITransaction } from './TransactionFeed';
 import AddressList from './AddressList';
 import AddressInput from './AddressInput';
 import Socket from '../services/Socket';
 import { convertBTCtoUSD, convertFromSatoshi } from '../util';
+import {toastr} from 'react-redux-toastr';
 
 import { addAddress, addTransactions, updateBTC, fetchAddress } from '../actions';
 
@@ -129,8 +129,10 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                     });
 
                     this.props.addTransactions(address.txrefs);
+                    toastr.success('Address added', 'We have successfully added that bitcoin address you wanted. Check your address list and transaction feed for an updated balance and new payments.');
                 }
             }, error => {
+                toastr.warning('Could not find address', 'Sorry, we weren\'t able to find that address to add to your list. Please try again soon!');
                 console.error(error);
             });
     }
