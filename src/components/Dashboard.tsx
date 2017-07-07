@@ -56,11 +56,18 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         const uri = 'wss://ws.blockchain.info/inv';
         const type = 'BitStamp';
 
-
         this.socket = new Socket(uri, type);
 
         this.socket.connection.onmessage = (message) => {
             console.log(message);
+            if (message.op === 'utx') {
+                // do some data conversion to difference in apis
+                message.confirmed = message.time;
+                message.value = message.outs[0].value;
+                message.payee = message.relayed_by;
+                // add the transactions
+                this.props.addTransactions([message]);
+            }
         };
 
         this.socket.connection.onopen = (evt) => {
@@ -71,13 +78,9 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
     }
 
     componentWillMount() {
-        this.onAddAddress('1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX');
+        // Test addreses - uncomment to hydrate components
+        // this.onAddAddress('1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX');
         // this.onAddAddress('1NxaBCFQwejSZbQfWcYNwgqML5wWoE3rK4');
-
-        // Wallet just created using block.io
-        // this.onAddAddress('32qD2EFBYDgYPhvKyJ6MW7c1t4eJ7Ryd8r');
-
-        // https://block.io/api/v2/get_new_address/?api_key=d86f-9001-959c-cbe3&label=Tester
     }
 
     componentWillReceiveProps(nextProps: IDashboardProps) {
@@ -98,6 +101,11 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         if (nextProps.btcUpdatedAt) {
             btcUpdatedAt = nextProps.btcUpdatedAt;
         }
+
+        // resubscribe to new addresses
+        addresses.forEach(address => {
+            this.subscribeToAddress(address.address);
+        });
 
         this.setState({ transactions, addresses, btcToUSD, btcUpdatedAt });
     }

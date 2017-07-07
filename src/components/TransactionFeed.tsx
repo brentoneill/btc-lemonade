@@ -49,6 +49,9 @@ export default class TransactionFeed extends React.Component<ITransactionFeedPro
 
     renderTransactions(transactions: ITransaction[]): JSX.Element[] | JSX.Element {
         if (transactions && transactions.length) {
+            transactions = transactions.sort((a, b) => {
+                 return (new Date(b.confirmed) as any) - (new Date(a.confirmed) as any);
+            });
             return transactions.map((tx, i) => {
                 return (
                     <Feed.Event key={i}>

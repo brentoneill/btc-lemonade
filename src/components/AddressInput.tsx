@@ -52,7 +52,7 @@ export default class AddressInput extends React.Component<IProps, IState> {
                                value={this.state.newAddress}
                                onChange={this.onAddressChange}
                                action={{ color: 'blue', labelPosition: 'right', icon: 'plus', content: 'Add', onClick: this.handleAddAddressClick }}
-                               placeholder="Some hash"/>
+                               placeholder="Some hash..."/>
                     </Card.Content>
                 </Card>
             </div>

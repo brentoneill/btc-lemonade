@@ -77,7 +77,7 @@ export default class AddressInput extends React.Component<IProps, IState> {
                                     <Feed.Content>
                                         <span className="block">{address.address}</span>
                                         <small>Balance: {convertBTCtoUSD(address.balance, this.state.btcToUSD)}&nbsp;
-                                        <span className="text-gray">({convertFromSatoshi(address.balance)}<Icon style={{ marginRight: 0 }}name="bitcoin"/>)</span></small>
+                                        <span className="text-gray">({address.balance && convertFromSatoshi(address.balance) || !address.balance && 0}<Icon style={{ marginRight: 0 }}name="bitcoin"/>)</span></small>
                                     </Feed.Content>
                                 </Feed.Event>
                             );

@@ -1,6 +1,5 @@
 import { UPDATE_BTC, ADD_TRANSACTIONS, ADD_ADDRESS, FETCH_ADDRESS, GENERATE_ADDRESS } from '../actions/index';
 import { addAddress, IAction } from '../actions';
-import { store } from '../';
 
 const INITIAL_STATE = {
     btcToUSD: null,
@@ -31,7 +30,6 @@ export default function(state = INITIAL_STATE, action: IAction) {
         case GENERATE_ADDRESS:
             let address = action.payload.data;
             // Add the address after generating
-            store.dispatch(addAddress(address));
             return {...state};
 
         case FETCH_ADDRESS:
