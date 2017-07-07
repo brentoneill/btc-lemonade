@@ -2,7 +2,7 @@
     "name": "lemonade-btc",
     "version": "1.0.0",
     "description": "Some bitcoin things with react and redux.",
-    "main": "src/index.tsx",
+    "main": "server.js",
     "repository": "git@github.com:brentoneill/btc-lemonade.git",
     "scripts": {
         "postinstall": "npm run build",
