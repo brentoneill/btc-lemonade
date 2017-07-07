@@ -51,7 +51,7 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
     componentWillMount() {
         const { currencyPair } = this.props;
         // Initialize the price
-        axios.get(`http://api.coindesk.com/v1/bpi/currentprice.json`)
+        axios.get(`https://api.coindesk.com/v1/bpi/currentprice.json`)
             .then(res => {
                 if (res && res.data) {
                     console.log(res)
