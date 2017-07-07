@@ -25,7 +25,6 @@ export default function(state = INITIAL_STATE, action: IAction) {
 
         case ADD_TRANSACTIONS:
             const transactions = state.transactions.concat(action.payload);
-            console.log(transactions);
             return {...state, transactions};
 
         case GENERATE_ADDRESS:

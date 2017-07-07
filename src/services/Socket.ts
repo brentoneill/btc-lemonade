@@ -20,17 +20,13 @@ export default class Socket {
     }
 
     onOpen(evt) {
-        console.info('connection open on: ', evt.target.url, evt);
-        // Pings to keep the connection open
-        if (this.type && this.type.toLowerCase() === 'bitstamp') {
-            this.setupPing();
-        }
+        this.setupPing();
     }
 
     setupPing() {
-        const msg = { 'op': 'ping'};
+        const msg = { 'op': 'ping' };
         this.sendMessage(msg);
-        setInterval(function() {
+        setInterval(() => {
             this.sendMessage(msg);
         }, 15000);
     }

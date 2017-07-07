@@ -54,11 +54,12 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         };
 
         const uri = 'wss://ws.blockchain.info/inv';
-        const type = 'BitStamp';
+        const type = 'blockchain.info';
 
         this.socket = new Socket(uri, type);
 
         this.socket.connection.onmessage = (message) => {
+            console.log(JSON.parse(message.data));
             const data = JSON.parse(message.data);
             if (data.op === 'utx') {
                 // do some data conversion to difference in apis
@@ -76,10 +77,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         };
 
         this.socket.connection.onopen = (evt) => {
-            this.state.addresses.forEach(address => {
-                this.subscribeToAddress(address.address);
-                // this.pingSubscribedAddresses();
-            });
+            this.socket.setupPing();
         };
     }
 
@@ -100,6 +98,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
             addresses = nextProps.addresses;
             // resubscribe to new addresses
             addresses.forEach(address => {
+                this.unsubscribeToAddress(address.address);
                 this.subscribeToAddress(address.address);
                 // this.pingSubscribedAddresses();
             });
@@ -114,6 +113,11 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         }
 
         this.setState({ transactions, addresses, btcToUSD, btcUpdatedAt });
+    }
+
+    @autobind
+    unsubscribeToAddress(address: string): void {
+        this.socket.connection.send(JSON.stringify({ 'op': 'addr_unsub', 'addr': address }));
     }
 
     @autobind
@@ -162,7 +166,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
 
         return (
             <div className="Dashboard">
-                <Grid>
+                <Grid stackable={true}>
                     <Grid.Row columns={16}>
                         <Grid.Column width={6}>
                             <BitcoinTicker onChange={this.updateBTCExchangerate}
