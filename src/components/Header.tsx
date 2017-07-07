@@ -10,7 +10,7 @@ interface IProps {
 
 interface IState {}
 
-class Header extends React.Component<IProps, IState> {
+class Header extends React.PureComponent<IProps, IState> {
     render() {
         const cssClasses = `Header ${this.props.className}`;
         // Button that triggers the modal

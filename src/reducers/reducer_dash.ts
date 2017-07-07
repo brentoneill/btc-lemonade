@@ -1,20 +1,13 @@
-import { UPDATE_BTC, ADD_TRANSACTION, ADD_ADDRESS } from '../actions/index';
-import { IAction } from './';
+import { UPDATE_BTC, ADD_TRANSACTIONS, ADD_ADDRESS, FETCH_ADDRESS, GENERATE_ADDRESS } from '../actions/index';
+import { addAddress, IAction } from '../actions';
+import { store } from '../';
 
 const INITIAL_STATE = {
     btcToUSD: null,
     btcUpdatedAt: null,
     transactions: [],
-    addresses: [
-        {
-            address: '1FztQpGD4fb45H32DhPtbM2g2HrH1f3TVG',
-            name: 'My Bitcoin Wallet'
-        },
-        {
-            address: '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX',
-            name: 'Silkroad Seized Coins'
-        }
-    ]
+    addresses: [],
+    updating: false
 };
 
 // Single function for actual reducer w/ a swtich statement to catch different
@@ -24,7 +17,27 @@ export default function(state = INITIAL_STATE, action: IAction) {
         case UPDATE_BTC:
             const btcToUSD = action.payload.price;
             const btcUpdatedAt = action.payload.timestamp;
+            console.log('updated btc at', new Date().toLocaleTimeString());
             return {...state, btcToUSD, btcUpdatedAt};
+
+        case ADD_ADDRESS:
+            const addresses = [...state.addresses, action.payload];
+            return {...state, addresses};
+
+        case ADD_TRANSACTIONS:
+            let transactions = state.transactions.concat(action.payload);
+            return {...state, transactions};
+
+        case GENERATE_ADDRESS:
+            let address = action.payload.data;
+            // Add the address after generating
+            store.dispatch(addAddress(address));
+            return {...state};
+
+        case FETCH_ADDRESS:
+            const { data } = action.payload;
+            return {...state };
+
         default:
             return state;
     }

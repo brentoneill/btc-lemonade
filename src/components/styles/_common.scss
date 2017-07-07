@@ -39,7 +39,10 @@ a {
     height: 35px;
     border-radius: 50%;
     background-color: #2185D0;
-    margin-top: 4px;
+}
+
+.feed .event {
+    .circle { margin-top: 10px; }
 }
 
 .text-center {
@@ -56,4 +59,12 @@ a {
             border-top-right-radius: 0 !important;
         }
     }
+}
+
+.ui.card>.content>.header {
+    width: 100%;
+}
+
+.ui.card {
+    min-height: 120px !important;
 }

@@ -10,7 +10,7 @@ export function convertToSatoshi(input: number): number {
     return input * SATOSHI;
 }
 
-export function converBTCtoUSD(exchangeRate: number, bitcoinAmount: number): number {
+export function convertBTCtoUSD(exchangeRate: number, bitcoinAmount: number): number {
     return currencyFormatter.format(convertFromSatoshi(bitcoinAmount) * exchangeRate, { code: 'USD' });
 }
 

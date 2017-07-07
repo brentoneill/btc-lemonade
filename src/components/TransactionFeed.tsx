@@ -4,7 +4,7 @@ import { Card, Feed, Header, Button, Icon, Modal } from 'semantic-ui-react';
 
 import { store } from '../';
 import Socket from '../services/Socket';
-import { stringToColour } from '../util';
+import { stringToColour, convertBTCtoUSD } from '../util';
 
 import './styles/TransactionFeed.scss';
 
@@ -14,12 +14,14 @@ interface ITransactionFeedProps {
 
 interface ITransactionFeedState {
     transactions?: ITransaction[];
+    btcToUSD?: number;
 }
 
 export interface ITransaction {
-    amount: number;
-    timestamp: string | number;
-    payee: string;
+    ref_balance: number;
+    valueUSD: number;
+    valueBTC: number;
+    confirmed: string;
     address: string;
 }
 
@@ -32,15 +34,26 @@ export default class TransactionFeed extends React.Component<ITransactionFeedPro
         };
     }
 
-    renderTransactions(transactions: ITransaction[]): JSX.Element {
+    componentWillReceiveProps(nextProps: ITransactionFeedProps) {
+        if (nextProps.transactions !== this.props.transactions && nextProps.transactions) {
+            this.setState({ transactions: nextProps.transactions });
+        }
+    }
+
+    renderTransactions(transactions: ITransaction[]): JSX.Element[] | JSX.Element {
         if (transactions && transactions.length) {
-            transactions.map((tx, i) => {
+            console.log(transactions);
+            return transactions.map((tx, i) => {
                 return (
                     <Feed.Event key={i}>
                         <Feed.Label>
-                            <div style={{ backgroundColor: stringToColour(tx.address) }} className={'circle'}></div>
+                            <div style={{ backgroundColor: stringToColour(tx.address) }} className={'circle'}>
+                            </div>
                         </Feed.Label>
-                        <Feed.Content date={tx.timestamp} summary={tx.payee} />
+                        <Feed.Content>
+                            <span className="block">You were paid {tx.valueUSD} (tx.valueBTC)</span>
+                            <small>{tx.confirmed}</small>
+                        </Feed.Content>
                     </Feed.Event>
                 );
             });

@@ -37,7 +37,14 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
 
         // BitStamp socket
         this.socketBitStamp = new Pusher('de504dc5763aeef9ff52');
-        let subscribeString = this.props.currencyPair ? `live_trades_${this.props.currencyPair}` : `live_trades`;
+
+        let subscribeString: string;
+        if (this.props.currencyPair === 'btcusd') {
+            subscribeString = 'live_trades';
+        } else {
+            subscribeString = `live_trades_${this.props.currencyPair}`;
+        }
+
         this.tradesChannel = this.socketBitStamp.subscribe(subscribeString);
     }
 
@@ -46,26 +53,23 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
         // Initialize the price
         axios.get(`https://www.bitstamp.net/api/v2/ticker/${currencyPair}`)
             .then(res => {
-                console.log(res);
+                if (this.props.onChange) {
+                    const data = {
+                        price: res.data.last,
+                        timestamp: res.data.timestamp
+                    };
+                    this.props.onChange(data);
+                }
                 this.setState({ currentPrice: res.data.last, time: res.data.timestamp });
             });
 
-        let channelName: string;
-        if (currencyPair === 'btcusd') {
-            channelName = 'trade';
-        } else {
-            channelName = `live_trades_${currencyPair}`;
-        }
-
         // Bind an event to the 'trade' event on the live_trades channel
-        this.tradesChannel.bind(channelName, data => {
+        this.tradesChannel.bind('trade', data => {
             if (this.props.onChange && this.state.currentPrice !== data.price ) {
                 this.props.onChange(data);
             }
 
             this.setState({ currentPrice: data.price, updating: true, time: parseInt(data.timestamp) }, () => {
-                console.log(data);
-                store.dispatch(updateBTC(data));
                 setTimeout(() => {
                     this.setState({ updating: false });
                 }, 1500);

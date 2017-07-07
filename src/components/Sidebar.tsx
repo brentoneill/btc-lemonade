@@ -33,7 +33,7 @@ class Sidebar extends React.Component<ISidebarProps, ISidebarState> {
             return navigationLinks.map(link => {
                 const { route, label, icon } = link;
                 return (
-                    <List.Item key={route}>
+                    <List.Item key={label}>
                         {link.icon && this.renderIcon(icon)}
                         <List.Content><Link className="block" activeClassName="active" to={route}>{label}</Link></List.Content>
                     </List.Item>

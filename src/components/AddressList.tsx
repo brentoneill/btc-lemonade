@@ -2,18 +2,20 @@ import * as React from 'react';
 import autobind from 'autobind-decorator';
 import { Card, Header, Feed, Icon } from 'semantic-ui-react';
 
-import { stringToColour } from '../util';
+import { stringToColour, convertBTCtoUSD } from '../util';
 
 import './styles/AddressList.scss';
 
 interface IProps {
     addresses?: any;
+    updatedAt?: number | string;
+    btcToUSD?: number;
 }
 
 interface IState {
     addresses?: any;
-    newAddress?: string;
     updatedAt?: number | string;
+    btcToUSD?: number;
 }
 
 export interface IBitcoinAddress {
@@ -29,24 +31,36 @@ export default class AddressInput extends React.Component<IProps, IState> {
         super(props);
         this.state = {
             addresses: props.addresses,
-            newAddress: null
         };
     }
 
     componentWillReceiveProps(nextProps: IProps): void {
-        if (nextProps.addresses !== this.state.addresses) {
-            this.setState({ addresses: nextProps.addresses });
+        let { addresses, updatedAt, btcToUSD } = this.state;
+
+        if (nextProps.btcToUSD) {
+            btcToUSD = nextProps.btcToUSD;
         }
+
+        if (nextProps.addresses !== this.state.addresses) {
+            addresses = nextProps.addresses;
+            updatedAt = new Date().toLocaleTimeString();
+        }
+
+        this.setState({ addresses, btcToUSD, updatedAt });
     }
 
-    renderCardFooter(timestamp): JSX.Element {
-        return (
-            <div>
-                <Icon name={'refresh'} />
-                <small className="BitcoinTicker--time"><i>Updated at...</i></small>
-            </div>
-
-        );
+    renderCardFooter(timestamp: number | string): JSX.Element {
+        const { updatedAt } = this.state;
+        if (updatedAt) {
+            return (
+                <div>
+                    <Icon name={'refresh'} />
+                    <small className="BitcoinTicker--time"><i>Updated at {updatedAt}</i></small>
+                </div>
+            );
+        } else {
+            return null;
+        }
     }
 
     renderCardContent(addresses): JSX.Element {
@@ -60,7 +74,10 @@ export default class AddressInput extends React.Component<IProps, IState> {
                                     <Feed.Label>
                                         <div style={{ backgroundColor: stringToColour(address.address) }} className={'circle'}></div>
                                     </Feed.Label>
-                                    <Feed.Content date={address.name} summary={address.address} />
+                                    <Feed.Content>
+                                        <span className="block">{address.address}</span>
+                                        <small>Balance: {convertBTCtoUSD(address.balance, this.state.btcToUSD)}</small>
+                                    </Feed.Content>
                                 </Feed.Event>
                             );
                         })}
@@ -70,7 +87,7 @@ export default class AddressInput extends React.Component<IProps, IState> {
         } else {
             return(
                 <Card.Content>
-                    <small className="gray text-center">You have not added any addresses yet. Click the button below to start watching you bitcoin wallet addresses!</small>
+                    <small className="gray text-center">You have not added any addresses yet. Start watching your bitcoin wallet addresses by entering them in the box up and to the right!</small>
                 </Card.Content>
             );
         }

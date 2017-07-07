@@ -2,19 +2,35 @@ import * as React from 'react';
 import { Grid, Card } from 'semantic-ui-react';
 import axios from 'axios';
 import autobind from 'autobind-decorator';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import BitcoinTicker from './BitcoinTicker';
 import TransactionFeed, { ITransaction } from './TransactionFeed';
 import AddressList from './AddressList';
 import AddressInput from './AddressInput';
 import Socket from '../services/Socket';
-import { store } from '../';
+import { convertBTCtoUSD, convertFromSatoshi } from '../util';
 
-interface IDashboardProps {}
+import { addAddress, addTransactions, updateBTC, fetchAddress } from '../actions';
+
+interface IDashboardProps {
+    // redux actions
+    updateBTC: Function;
+    addAddress: Function;
+    addTransactions: Function;
+    // data
+    transactions: any[];
+    addresses: any[];
+    btcToUSD: number;
+    btcUpdatedAt: number | string;
+}
 
 interface IDashboardState {
     addresses?: any;
     transactions?: ITransaction[];
+    btcToUSD?: number;
+    btcUpdatedAt?: number | string;
 }
 
 export interface ITransaction {
@@ -27,25 +43,26 @@ export interface ITransaction {
 import './styles/Dashboard.scss';
 
 // Create the coinbase client - probably need to do on server
-const CoinbaseClient = require('coinbase').Client;
-const apiKey = 'nxv5LXg8Ge4DnKuM';
-const apiSecret = '6wQhqnPCvsqVCJ6uCvsg15Elt3ScvYIy';
-const version = null;
-const ApiClient = new CoinbaseClient({ apiKey, apiSecret, version });
+// const CoinbaseClient = require('coinbase').Client;
+// const apiKey = 'nxv5LXg8Ge4DnKuM';
+// const apiSecret = '6wQhqnPCvsqVCJ6uCvsg15Elt3ScvYIy';
+// const version = null;
+// const ApiClient = new CoinbaseClient({ apiKey, apiSecret, version });
 
-export default class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
+class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
 
     public socket;
 
     constructor(props: IDashboardProps) {
         super(props);
         this.state = {
-            transactions: [],
-            addresses: store.getState().dash.addresses
+            transactions: props.transactions,
+            addresses: props.addresses
         };
 
         const uri = 'wss://ws.blockchain.info/inv';
         const type = 'BitStamp';
+
 
         this.socket = new Socket(uri, type);
 
@@ -61,12 +78,35 @@ export default class Dashboard extends React.Component<IDashboardProps, IDashboa
     }
 
     componentWillMount() {
-        // this.getAddressTransactions()
-        //     .then(res => {
-        //         console.log('res', res);
-        //     }, err => {
-        //         console.log(err);
-        //     });
+        // this.onAddAddress('1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX');
+        // this.onAddAddress('1NxaBCFQwejSZbQfWcYNwgqML5wWoE3rK4');
+
+        // Wallet just created using block.io
+        // this.onAddAddress('32qD2EFBYDgYPhvKyJ6MW7c1t4eJ7Ryd8r');
+
+        // https://block.io/api/v2/get_new_address/?api_key=d86f-9001-959c-cbe3&label=Tester
+    }
+
+    componentWillReceiveProps(nextProps: IDashboardProps) {
+        let { transactions, addresses, btcToUSD, btcUpdatedAt } = this.state;
+
+        if (nextProps.transactions !== this.props.transactions) {
+            transactions = nextProps.transactions;
+        }
+
+        if (nextProps.addresses !== this.props.addresses) {
+            addresses = nextProps.addresses;
+        }
+
+        if (nextProps.btcToUSD) {
+            btcToUSD = nextProps.btcToUSD;
+        }
+
+        if (nextProps.btcUpdatedAt) {
+            btcUpdatedAt = nextProps.btcUpdatedAt;
+        }
+
+        this.setState({ transactions, addresses, btcToUSD, btcUpdatedAt });
     }
 
     @autobind
@@ -74,26 +114,61 @@ export default class Dashboard extends React.Component<IDashboardProps, IDashboa
         this.socket.connection.send({ 'op': 'addr_sub', 'addr': address });
     }
 
+    @autobind
+    onAddAddress(address: string) {
+        this.getAddressTransaction(address)
+            .then(res => {
+                const address = res.data;
+                this.props.addAddress(address);
+                if (address.txrefs && address.txrefs.length) {
+                    // Remap the properties here
+                    address.txrefs = address.txrefs.map(tx => {
+                        tx.valueUSD = convertBTCtoUSD(address.value, this.state.btcToUSD);
+                        tx.valueBTC = convertFromSatoshi(address.value);
+                        tx.address = address.address;
+                        return tx;
+                    });
+
+                    this.props.addTransactions(address.txrefs);
+                }
+            }, error => {
+                console.error(error);
+            });
+    }
+
+    getAddressTransaction(address: string) {
+        return axios.get(`https://api.blockcypher.com/v1/btc/main/addrs/${address}`);
+    }
+
     getAddressTransactions() {
         const { addresses } = this.state;
         const addressString = addresses.map(address => address.address).join('|');
-        return axios.get(`https://blockchain.info/multiaddr?active=${addressString}`);
+        return axios.get(`https://blockchain.info/multiaddr?active=${addressString}?cors=true`);
+    }
+
+    @autobind
+    updateBTCExchangerate(order): void {
+        this.props.updateBTC(order);
     }
 
     render() {
-        const { transactions, addresses } = this.state;
+        const { transactions, addresses, btcToUSD, btcUpdatedAt } = this.state;
 
         return (
             <div className="Dashboard">
                 <Grid>
                     <Grid.Row columns={16}>
                         <Grid.Column width={6}>
-                            <BitcoinTicker currencyPair={'btcusd'} animateOnUpdate={true} showTimestamp={true}/>
-                            <BitcoinTicker currencyPair={'ltcusd'} animateOnUpdate={true} showTimestamp={true}/>
-                            <AddressList addresses={addresses} />
+                            <BitcoinTicker onChange={this.updateBTCExchangerate}
+                                           currencyPair={'btcusd'}
+                                           animateOnUpdate={true}
+                                           showTimestamp={true}/>
+                            <AddressList addresses={addresses}
+                                         updatedAt={btcUpdatedAt}
+                                         btcToUSD={btcToUSD}/>
                         </Grid.Column>
                         <Grid.Column width={10}>
-                            <AddressInput onAddAddress={this.subscribeToAddress}/>
+                            <AddressInput onAddAddress={this.onAddAddress}/>
                             <TransactionFeed transactions={transactions} />
                         </Grid.Column>
                     </Grid.Row>
@@ -102,3 +177,23 @@ export default class Dashboard extends React.Component<IDashboardProps, IDashboa
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        transactions: state.dash.transactions,
+        addresses: state.dash.addresses,
+        btcToUSD: state.dash.btcToUSD,
+        btcUpdatedAt: state.dash.btcUpdatedAt
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addAddress: bindActionCreators(addAddress, dispatch),
+        addTransactions: bindActionCreators(addTransactions, dispatch),
+        updateBTC: bindActionCreators(updateBTC, dispatch),
+        fetchAddress: bindActionCreators(fetchAddress, dispatch)
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
