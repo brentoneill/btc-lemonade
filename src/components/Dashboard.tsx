@@ -59,20 +59,26 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         this.socket = new Socket(uri, type);
 
         this.socket.connection.onmessage = (message) => {
-            console.log(message);
-            if (message.op === 'utx') {
+            const data = JSON.parse(message.data);
+            if (data.op === 'utx') {
                 // do some data conversion to difference in apis
-                message.confirmed = message.time;
-                message.value = message.outs[0].value;
-                message.payee = message.relayed_by;
+                data.confirmed = new Date(0).setUTCSeconds(data.x.time);
+                data.value = data.x.out.map(out => {
+                    return out.value;
+                }).reduce((prevVal, elem) => {
+                    return prevVal + elem;
+                });
+                data.payee = data.x.relayed_by;
+                data.address = data.address ? data.address : '';
                 // add the transactions
-                this.props.addTransactions([message]);
+                this.props.addTransactions([data]);
             }
         };
 
         this.socket.connection.onopen = (evt) => {
             this.state.addresses.forEach(address => {
                 this.subscribeToAddress(address.address);
+                // this.pingSubscribedAddresses();
             });
         };
     }
@@ -92,6 +98,11 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
 
         if (nextProps.addresses !== this.props.addresses) {
             addresses = nextProps.addresses;
+            // resubscribe to new addresses
+            addresses.forEach(address => {
+                this.subscribeToAddress(address.address);
+                // this.pingSubscribedAddresses();
+            });
         }
 
         if (nextProps.btcToUSD) {
@@ -102,17 +113,17 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
             btcUpdatedAt = nextProps.btcUpdatedAt;
         }
 
-        // resubscribe to new addresses
-        addresses.forEach(address => {
-            this.subscribeToAddress(address.address);
-        });
-
         this.setState({ transactions, addresses, btcToUSD, btcUpdatedAt });
     }
 
     @autobind
-    subscribeToAddress(address: string) {
-        this.socket.connection.send({ 'op': 'addr_sub', 'addr': address });
+    subscribeToAddress(address: string): void {
+        this.socket.connection.send(JSON.stringify({ 'op': 'addr_sub', 'addr': address }));
+    }
+
+    @autobind
+    pingSubscribedAddresses(): void {
+        this.socket.connection.send(JSON.stringify({ 'op': 'ping_tx' }));
     }
 
     @autobind
