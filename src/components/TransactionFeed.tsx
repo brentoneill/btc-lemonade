@@ -4,12 +4,13 @@ import { Card, Feed, Header, Button, Icon, Modal } from 'semantic-ui-react';
 
 import { store } from '../';
 import Socket from '../services/Socket';
-import { stringToColour, convertBTCtoUSD } from '../util';
+import { stringToColour, convertBTCtoUSD, convertFromSatoshi } from '../util';
 
 import './styles/TransactionFeed.scss';
 
 interface ITransactionFeedProps {
     transactions?: ITransaction[];
+    btcToUSD?: number;
 }
 
 interface ITransactionFeedState {
@@ -19,8 +20,7 @@ interface ITransactionFeedState {
 
 export interface ITransaction {
     ref_balance: number;
-    valueUSD: number;
-    valueBTC: number;
+    value: number;
     confirmed: string;
     address: string;
 }
@@ -35,14 +35,20 @@ export default class TransactionFeed extends React.Component<ITransactionFeedPro
     }
 
     componentWillReceiveProps(nextProps: ITransactionFeedProps) {
+        let { transactions, btcToUSD } = this.state;
+
         if (nextProps.transactions !== this.props.transactions && nextProps.transactions) {
-            this.setState({ transactions: nextProps.transactions });
+            transactions = nextProps.transactions;
         }
+
+        if (nextProps.btcToUSD !== this.props.btcToUSD && nextProps.btcToUSD) {
+            btcToUSD = nextProps.btcToUSD;
+        }
+        this.setState({ transactions, btcToUSD });
     }
 
     renderTransactions(transactions: ITransaction[]): JSX.Element[] | JSX.Element {
         if (transactions && transactions.length) {
-            console.log(transactions);
             return transactions.map((tx, i) => {
                 return (
                     <Feed.Event key={i}>
@@ -51,8 +57,8 @@ export default class TransactionFeed extends React.Component<ITransactionFeedPro
                             </div>
                         </Feed.Label>
                         <Feed.Content>
-                            <span className="block">You were paid {tx.valueUSD} (tx.valueBTC)</span>
-                            <small>{tx.confirmed}</small>
+                            <span className="block">You were paid {convertBTCtoUSD(tx.value, this.state.btcToUSD)} <span className="text-gray">({convertFromSatoshi(tx.value)}<Icon style={{ marginRight: 0 }}name="bitcoin"/>)</span></span>
+                            <small>On {new Date(tx.confirmed).toLocaleDateString()} at {new Date(tx.confirmed).toLocaleTimeString()}</small>
                         </Feed.Content>
                     </Feed.Event>
                 );

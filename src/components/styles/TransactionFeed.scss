@@ -7,11 +7,16 @@
         margin-top: 4px !important;
     }
 
-    .ui.feed>.event {
-        padding-left: $padding-md;
-    }
+    .ui.feed {
+        max-height: 500px;
+        overflow-y: auto;
+        width: 100%;
 
-    .ui.feed>.event>.label {
-        width: auto;
+        >.event {
+            padding-left: $padding-md;
+            > .label {
+                width: auto;
+            }
+        }
     }
 }

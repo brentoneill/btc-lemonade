@@ -42,13 +42,6 @@ export interface ITransaction {
 
 import './styles/Dashboard.scss';
 
-// Create the coinbase client - probably need to do on server
-// const CoinbaseClient = require('coinbase').Client;
-// const apiKey = 'nxv5LXg8Ge4DnKuM';
-// const apiSecret = '6wQhqnPCvsqVCJ6uCvsg15Elt3ScvYIy';
-// const version = null;
-// const ApiClient = new CoinbaseClient({ apiKey, apiSecret, version });
-
 class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
 
     public socket;
@@ -78,7 +71,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
     }
 
     componentWillMount() {
-        // this.onAddAddress('1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX');
+        this.onAddAddress('1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX');
         // this.onAddAddress('1NxaBCFQwejSZbQfWcYNwgqML5wWoE3rK4');
 
         // Wallet just created using block.io
@@ -123,8 +116,6 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 if (address.txrefs && address.txrefs.length) {
                     // Remap the properties here
                     address.txrefs = address.txrefs.map(tx => {
-                        tx.valueUSD = convertBTCtoUSD(address.value, this.state.btcToUSD);
-                        tx.valueBTC = convertFromSatoshi(address.value);
                         tx.address = address.address;
                         return tx;
                     });
@@ -169,7 +160,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         </Grid.Column>
                         <Grid.Column width={10}>
                             <AddressInput onAddAddress={this.onAddAddress}/>
-                            <TransactionFeed transactions={transactions} />
+                            <TransactionFeed transactions={transactions} btcToUSD={btcToUSD} />
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

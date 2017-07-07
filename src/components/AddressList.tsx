@@ -2,7 +2,7 @@ import * as React from 'react';
 import autobind from 'autobind-decorator';
 import { Card, Header, Feed, Icon } from 'semantic-ui-react';
 
-import { stringToColour, convertBTCtoUSD } from '../util';
+import { stringToColour, convertBTCtoUSD, convertFromSatoshi } from '../util';
 
 import './styles/AddressList.scss';
 
@@ -76,7 +76,8 @@ export default class AddressInput extends React.Component<IProps, IState> {
                                     </Feed.Label>
                                     <Feed.Content>
                                         <span className="block">{address.address}</span>
-                                        <small>Balance: {convertBTCtoUSD(address.balance, this.state.btcToUSD)}</small>
+                                        <small>Balance: {convertBTCtoUSD(address.balance, this.state.btcToUSD)}&nbsp;
+                                        <span className="text-gray">({convertFromSatoshi(address.balance)}<Icon style={{ marginRight: 0 }}name="bitcoin"/>)</span></small>
                                     </Feed.Content>
                                 </Feed.Event>
                             );
