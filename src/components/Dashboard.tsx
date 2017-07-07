@@ -117,7 +117,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
 
     @autobind
     onAddAddress(address: string) {
-        this.getAddressTransaction(address)
+        return this.getAddressTransaction(address)
             .then(res => {
                 const address = res.data;
                 this.props.addAddress(address);

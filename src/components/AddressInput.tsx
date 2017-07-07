@@ -12,6 +12,7 @@ interface IProps {
 
 interface IState {
     newAddress?: string;
+    loading?: boolean;
 }
 
 export interface IBitcoinAddress {
@@ -33,8 +34,11 @@ export default class AddressInput extends React.Component<IProps, IState> {
 
     @autobind
     handleAddAddressClick(event: React.MouseEvent<HTMLButtonElement>, data): void {
-        this.props.onAddAddress(this.state.newAddress);
-        this.setState({ newAddress: '' });
+        this.setState({ loading: true });
+        this.props.onAddAddress(this.state.newAddress)
+            .then(res => {
+                this.setState({ newAddress: '', loading: false });
+            });
     }
 
     @autobind
@@ -51,7 +55,7 @@ export default class AddressInput extends React.Component<IProps, IState> {
                         <Input fluid
                                value={this.state.newAddress}
                                onChange={this.onAddressChange}
-                               action={{ disabled: this.state.newAddress.length < 25, color: 'blue', labelPosition: 'right', icon: 'plus', content: 'Add', onClick: this.handleAddAddressClick }}
+                               action={{ loading: this.state.loading, disabled: this.state.newAddress.length < 25, color: 'blue', labelPosition: 'right', icon: 'plus', content: 'Add', onClick: this.handleAddAddressClick }}
                                placeholder="Some hash..."/>
                     </Card.Content>
                 </Card>
