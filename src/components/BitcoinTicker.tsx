@@ -10,10 +10,10 @@ import { updateBTC } from '../actions';
 import './styles/BitcoinTicker.scss';
 
 export interface IBitcoinTickerProps {
-    currencyPair: string; // ltcusd or btcusd
+    currencyPair?: string; // ltcusd or btcusd
     animateOnUpdate?: boolean;
     showTimestamp?: boolean;
-    onChange?: (order: any) => void;
+    onChange: (orderData: any) => void;
 }
 
 export interface IBitcoinTrackerState {
@@ -51,16 +51,17 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
     componentWillMount() {
         const { currencyPair } = this.props;
         // Initialize the price
-        axios.get(`https://www.bitstamp.net/api/v2/ticker/${currencyPair}`)
+        axios.get(`http://api.coindesk.com/v1/bpi/currentprice.json`)
             .then(res => {
-                if (this.props.onChange) {
-                    const data = {
-                        price: res.data.last,
-                        timestamp: res.data.timestamp
-                    };
+                if (res && res.data) {
+                    console.log(res)
+                    const price = res.data.bpi.USD.rate_float;
+                    const timestamp = res.data.time.updated;
+                    const data = { price, timestamp }
+
                     this.props.onChange(data);
+                    this.setState({ currentPrice: price, time: timestamp });
                 }
-                this.setState({ currentPrice: res.data.last, time: res.data.timestamp });
             });
 
         // Bind an event to the 'trade' event on the live_trades channel
@@ -88,10 +89,9 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
         }
     }
 
-    renderTimestamp(showTimestamp: boolean, timeInUTC: number ): JSX.Element | null {
-        if (showTimestamp && timeInUTC) {
-            const dateTime = new Date(0);
-            dateTime.setUTCSeconds(timeInUTC);
+    renderTimestamp(showTimestamp: boolean, time: number | string ): JSX.Element | null {
+        if (showTimestamp && time) {
+            const dateTime = new Date(time as string);
             return (
                 <div>
                     <Icon name={'refresh'} />

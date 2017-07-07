@@ -1,10 +1,11 @@
 import * as React from 'react';
-
+import * as sinon from 'sinon';
 import { shallow } from 'enzyme';
 import BitcoinTicker from '../BitcoinTicker';
 
 const defaultProps = {
-    currencyPair: 'btcusd'
+    currencyPair: 'btcusd',
+    onChange: sinon.spy()
 };
 
 describe('<BitcoinTicker /> component', () => {
