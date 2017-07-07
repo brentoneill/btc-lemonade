@@ -21,7 +21,7 @@ export interface IBitcoinTrackerState {
     currentPrice?: number;
     updating?: boolean;
     // time is epoch
-    time?: number;
+    time?: number | Date;
 }
 
 export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, IBitcoinTrackerState> {
@@ -51,14 +51,12 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
     componentWillMount() {
         const { currencyPair } = this.props;
         // Initialize the price
-        axios.get(`https://api.coindesk.com/v1/bpi/currentprice.json`)
+        axios.get(`https://blockchain.info/ticker?cors=true`)
             .then(res => {
                 if (res && res.data) {
-                    console.log(res)
-                    const price = res.data.bpi.USD.rate_float;
-                    const timestamp = res.data.time.updated;
-                    const data = { price, timestamp }
-
+                    const price = res.data.USD.last;
+                    const timestamp = new Date();
+                    const data = { price, timestamp };
                     this.props.onChange(data);
                     this.setState({ currentPrice: price, time: timestamp });
                 }
@@ -89,18 +87,27 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
         }
     }
 
-    renderTimestamp(showTimestamp: boolean, time: number | string ): JSX.Element | null {
-        if (showTimestamp && time) {
-            const dateTime = new Date(time as string);
+    renderTimestamp(showTimestamp: boolean, time: any): JSX.Element | null {
+        if (showTimestamp && typeof time === 'number') {
+            const dateTime = new Date(0);
+            dateTime.setUTCSeconds(time);
             return (
                 <div>
                     <Icon name={'refresh'} />
                     <small className="BitcoinTicker--time"><i>Updated at {dateTime.toLocaleTimeString()}</i></small>
                 </div>
-
             );
         } else {
-            return null;
+            if (!time) {
+                return null;
+            } else {
+                return (
+                    <div>
+                        <Icon name={'refresh'} />
+                        <small className="BitcoinTicker--time"><i>Updated at {time.toLocaleTimeString()}</i></small>
+                    </div>
+                );
+            }
         }
     }
 
