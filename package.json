@@ -1,14 +1,14 @@
 {
-    "name": "redux-simple-starter",
+    "name": "lemonade-btc",
     "version": "1.0.0",
-    "description": "Simple starter package for React + Redux with support for Ezyme testing, TypeScript, and Babel.",
-    "main": "src/index.jsx",
-    "repository": "git@github.com:brentoneill/ReactStarter.git",
+    "description": "Some bitcoin things with react and redux.",
+    "main": "src/index.tsx",
+    "repository": "git@github.com:brentoneill/btc-lemonade.git",
     "scripts": {
+        "postinstall": "npm run build",
         "build": "webpack",
         "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-        "test": "karma start  --no-single-run --auto-watch --browsers Chrome karma.conf.js",
-        "deploy": ""
+        "test": "karma start  --no-single-run --auto-watch --browsers Chrome karma.conf.js"
     },
     "author": "Brent O'Neill <brentoneill@gmail.com>",
     "license": "ISC",
@@ -46,6 +46,7 @@
         "coinbase": "^2.0.6",
         "css-loader": "^0.28.4",
         "currency-formatter": "^1.2.1",
+        "ejs": "^2.5.6",
         "express": "^4.15.3",
         "font-loader": "^0.1.2",
         "node-sass": "^4.5.3",
