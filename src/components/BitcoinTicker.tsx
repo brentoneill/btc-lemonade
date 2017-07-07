@@ -92,7 +92,7 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
             const dateTime = new Date(0);
             dateTime.setUTCSeconds(time);
             return (
-                <div>
+                <div className="text-gray">
                     <Icon name={'refresh'} />
                     <small className="BitcoinTicker--time"><i>Updated at {dateTime.toLocaleTimeString()}</i></small>
                 </div>
@@ -102,7 +102,7 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
                 return null;
             } else {
                 return (
-                    <div>
+                    <div className="text-gray">
                         <Icon name={'refresh'} />
                         <small className="BitcoinTicker--time"><i>Updated at {time.toLocaleTimeString()}</i></small>
                     </div>

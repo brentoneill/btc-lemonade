@@ -51,8 +51,8 @@ export default class AddressInput extends React.Component<IProps, IState> {
         if (updatedAt) {
             return (
                 <Card.Content>
-                    <Icon name={'refresh'} />
-                    <small className="BitcoinTicker--time"><i>Updated at {updatedAt}</i></small>
+                    <Icon name={'refresh'} className="text-gray"/>
+                    <small className="text-gray"><i>Updated at {updatedAt}</i></small>
                 </Card.Content>
             );
         } else {
@@ -85,7 +85,7 @@ export default class AddressInput extends React.Component<IProps, IState> {
         } else {
             return(
                 <Card.Content>
-                    <small className="gray text-center">You have not added any addresses yet. Start watching your bitcoin wallet addresses by entering them in the box up and to the right!</small>
+                    <small className="text-center">You have not added any addresses yet. Start watching your bitcoin wallet addresses by entering them in the box up and to the right!</small>
                 </Card.Content>
             );
         }

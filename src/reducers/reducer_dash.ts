@@ -24,11 +24,12 @@ export default function(state = INITIAL_STATE, action: IAction) {
             return {...state, addresses};
 
         case ADD_TRANSACTIONS:
-            let transactions = state.transactions.concat(action.payload);
+            const transactions = state.transactions.concat(action.payload);
+            console.log(transactions);
             return {...state, transactions};
 
         case GENERATE_ADDRESS:
-            let address = action.payload.data;
+            const address = action.payload.data;
             return {...state};
 
         case FETCH_ADDRESS:
