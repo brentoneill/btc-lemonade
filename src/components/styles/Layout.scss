@@ -1,9 +1,5 @@
 @import './variables';
 
-.Layout {
-
-}
-
 .Layout--sidebar {
     position: absolute;
     top: 0;
@@ -25,9 +21,4 @@
 
 .Layout--body {
     padding: $padding-md * 2;
-}
-
-html,
-body {
-    background: $bg-color;
 }

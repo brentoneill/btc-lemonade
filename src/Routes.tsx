@@ -7,7 +7,8 @@ import Dashboard from './components/Dashboard';
 import Stats from './components/Stats';
 import Settings from './components/Settings';
 
-// NOTE: Stats and settings tabs are stubbed for future
+// NOTE: Stats and settings tabs are stubbed for future development, but have
+//       no content currently.
 export default (
     <Route path="/" component={App}>
         <Route component={Layout}>
