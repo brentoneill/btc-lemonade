@@ -5,8 +5,8 @@ import { Card, Header, Feed, Icon } from 'semantic-ui-react';
 import { stringToColour, convertBTCtoUSD, convertFromSatoshi } from '../util';
 
 interface IProps {
-    addresses?: any;
-    btcToUSD?: number;
+    addresses: any;
+    btcToUSD: number;
 }
 
 interface IState {
@@ -50,10 +50,10 @@ export default class AddressInput extends React.Component<IProps, IState> {
         const { updatedAt } = this.state;
         if (updatedAt) {
             return (
-                <div>
+                <Card.Content>
                     <Icon name={'refresh'} />
                     <small className="BitcoinTicker--time"><i>Updated at {updatedAt}</i></small>
-                </div>
+                </Card.Content>
             );
         } else {
             return null;
@@ -105,9 +105,7 @@ export default class AddressInput extends React.Component<IProps, IState> {
                     <Card.Content>
                         {cardContent}
                     </Card.Content>
-                    <Card.Content extra>
-                        {cardFooter}
-                    </Card.Content>
+                    {cardFooter}
                 </Card>
             </div>
         );
