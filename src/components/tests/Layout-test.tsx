@@ -14,9 +14,10 @@ describe('<Layout /> component', () => {
         expect(layout.find('.Layout .Layout--body').length).toBe(1);
     });
 
-    it('should render a <Header /> component with className .Layout--header', () => {
-        expect(layout.find('Header').length).toBe(1);
-        expect(layout.find('Header').props().className).toContain('Layout--header');
+    it('should render a connected <Header /> component with className .Layout--header', () => {
+        console.log(layout.debug());
+        expect(layout.find('Connect(Header)').length).toBe(1);
+        expect(layout.find('Connect(Header)').props().className).toContain('Layout--header');
     });
 
     it('should render a <Footer /> component with className .Layout--footer', () => {
