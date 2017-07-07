@@ -4,11 +4,8 @@ import { Card, Header, Feed, Icon } from 'semantic-ui-react';
 
 import { stringToColour, convertBTCtoUSD, convertFromSatoshi } from '../util';
 
-import './styles/AddressList.scss';
-
 interface IProps {
     addresses?: any;
-    updatedAt?: number | string;
     btcToUSD?: number;
 }
 

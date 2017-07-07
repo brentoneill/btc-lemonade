@@ -16,7 +16,7 @@ export default function(state = INITIAL_STATE, action: IAction) {
         case UPDATE_BTC:
             const btcToUSD = action.payload.price;
             const btcUpdatedAt = action.payload.timestamp;
-            console.log('updated btc at', new Date().toLocaleTimeString());
+            console.info('updated btc at', new Date().toLocaleTimeString());
             return {...state, btcToUSD, btcUpdatedAt};
 
         case ADD_ADDRESS:
@@ -29,7 +29,6 @@ export default function(state = INITIAL_STATE, action: IAction) {
 
         case GENERATE_ADDRESS:
             let address = action.payload.data;
-            // Add the address after generating
             return {...state};
 
         case FETCH_ADDRESS:

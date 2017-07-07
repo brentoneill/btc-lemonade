@@ -8,18 +8,11 @@
     }
 }
 
-a {
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-}
-
-.block {
-    display: block;
-}
-
-.card {
+.ui.card {
+    min-height: 120px !important;
     .ui.header {
         font-weight: 300;
+        width: 100%;
     }
 }
 
@@ -45,10 +38,6 @@ a {
     .circle { margin-top: 10px; }
 }
 
-.text-center {
-    text-align: center;
-}
-
 .content.extra {
     .ui.fluid.input {
         input {
@@ -61,14 +50,24 @@ a {
     }
 }
 
-.ui.card>.content>.header {
-    width: 100%;
+a {
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
 }
 
-.ui.card {
-    min-height: 120px !important;
+.block {
+    display: block;
 }
 
 .text-gray {
     color: $gray;
+}
+
+.text-center {
+    text-align: center;
+}
+
+html,
+body {
+    background: $bg-color;
 }

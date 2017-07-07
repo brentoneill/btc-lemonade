@@ -141,12 +141,6 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         return axios.get(`https://api.blockcypher.com/v1/btc/main/addrs/${address}`);
     }
 
-    getAddressTransactions() {
-        const { addresses } = this.state;
-        const addressString = addresses.map(address => address.address).join('|');
-        return axios.get(`https://blockchain.info/multiaddr?active=${addressString}?cors=true`);
-    }
-
     @autobind
     updateBTCExchangerate(order): void {
         this.props.updateBTC(order);
@@ -164,9 +158,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                                            currencyPair={'btcusd'}
                                            animateOnUpdate={true}
                                            showTimestamp={true}/>
-                            <AddressList addresses={addresses}
-                                         updatedAt={btcUpdatedAt}
-                                         btcToUSD={btcToUSD}/>
+                            <AddressList addresses={addresses} btcToUSD={btcToUSD}/>
                         </Grid.Column>
                         <Grid.Column width={10}>
                             <AddressInput onAddAddress={this.onAddAddress}/>

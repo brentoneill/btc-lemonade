@@ -7,7 +7,7 @@ import Dashboard from './components/Dashboard';
 import Stats from './components/Stats';
 import Settings from './components/Settings';
 
-// When user is at "/", show the "PostsIndex" component
+// NOTE: Stats and settings tabs are stubbed for future
 export default (
     <Route path="/" component={App}>
         <Route component={Layout}>

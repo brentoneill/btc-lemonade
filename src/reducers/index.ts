@@ -1,11 +1,11 @@
-import {combineReducers} from 'redux';
-import {reducer as toastrReducer} from 'react-redux-toastr';
+import { combineReducers } from 'redux';
+import { reducer as toastrReducer } from 'react-redux-toastr';
 import DashReducer from './reducer_dash';
 
 const rootReducer = combineReducers({
     // all dashboard info
     dash: DashReducer,
-    // toasters
+    // toaster reducer (for notification messages)
     toastr: toastrReducer
 });
 

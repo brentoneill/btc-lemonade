@@ -2,7 +2,6 @@ import * as React from 'react';
 import autobind from 'autobind-decorator';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router';
 import { Button, Modal, Icon, Input } from 'semantic-ui-react';
 import {toastr} from 'react-redux-toastr';
 
