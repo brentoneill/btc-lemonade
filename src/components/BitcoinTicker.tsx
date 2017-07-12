@@ -94,7 +94,7 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
             return (
                 <div className="text-gray">
                     <Icon name={'refresh'} />
-                    <small className="BitcoinTicker--time"><i>Updated at {dateTime.toLocaleTimeString()}</i></small>
+                    <small className="BitcoinTicker__time"><i>Updated at {dateTime.toLocaleTimeString()}</i></small>
                 </div>
             );
         } else {
@@ -104,7 +104,7 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
                 return (
                     <div className="text-gray">
                         <Icon name={'refresh'} />
-                        <small className="BitcoinTicker--time"><i>Updated at {time.toLocaleTimeString()}</i></small>
+                        <small className="BitcoinTicker__time"><i>Updated at {time.toLocaleTimeString()}</i></small>
                     </div>
                 );
             }
@@ -132,7 +132,7 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
         let card: JSX.Element;
 
         if (updating) {
-            cssClasses.push('BitcoinTicker__updating');
+            cssClasses.push('BitcoinTicker--updating');
         }
 
         if (!currentPrice) {

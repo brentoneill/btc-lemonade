@@ -38,13 +38,13 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
 
         return (
             <div className="Layout">
-                <Sidebar className={'Layout--sidebar'} navigationLinks={navLinks}/>
-                <div className="Layout--content">
-                    <Header className={'Layout--header'} />
-                    <div className="Layout--body">
+                <Sidebar className={'Layout__sidebar'} navigationLinks={navLinks}/>
+                <div className="Layout__content">
+                    <Header className={'Layout__header'} />
+                    <div className="Layout__body">
                         {this.props.children}
                     </div>
-                    <Footer className={'Layout--footer'} />
+                    <Footer className={'Layout__footer'} />
                 </div>
             </div>
         );

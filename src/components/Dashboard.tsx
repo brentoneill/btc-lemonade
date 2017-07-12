@@ -10,7 +10,7 @@ import AddressList from './AddressList';
 import AddressInput from './AddressInput';
 import Socket from '../services/Socket';
 import { convertBTCtoUSD, convertFromSatoshi } from '../util';
-import {toastr} from 'react-redux-toastr';
+import { toastr } from 'react-redux-toastr';
 
 import { addAddress, addTransactions, updateBTC, fetchAddress } from '../actions';
 
