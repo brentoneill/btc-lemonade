@@ -1,6 +1,6 @@
 @import './variables';
 
-.Layout--sidebar {
+.Layout__sidebar {
     position: absolute;
     top: 0;
     left: 0;
@@ -10,7 +10,7 @@
     padding: $padding-md;
 }
 
-.Layout--content {
+.Layout__content {
     position: absolute;
     top: 0;
     left: $sidebar-width;
@@ -19,6 +19,6 @@
     background-color: $bg-color;
 }
 
-.Layout--body {
+.Layout__body {
     padding: $padding-md * 2;
 }
