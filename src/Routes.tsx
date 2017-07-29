@@ -11,12 +11,13 @@ import Base from './components/Base';
 // NOTE: Stats and settings tabs are stubbed for future development, but have
 //       no content currently.
 export default (
-    <Route path="/" component={App}>
+    <Route component={App}>
         <Route component={Layout}>
-            <IndexRoute component={Base}/>
-            <Route path="dashboard" component={Dashboard} />
-            <Route path="stats" component={Stats} />
-            <Route path="settings" component={Settings} />
+            <Route path="/" component={Base}>
+                <Route path="dashboard" component={Dashboard} />
+                <Route path="stats" component={Stats} />
+                <Route path="settings" component={Settings} />
+            </Route>
             <Redirect from="/" to="dashboard"/>
         </Route>
     </Route>
