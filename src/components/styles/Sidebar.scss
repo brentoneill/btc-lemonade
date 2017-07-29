@@ -41,6 +41,9 @@
 
         a:hover {
             opacity: 1;
+            .icon {
+                opacity: .8;
+            }
         }
 
         .icon {
