@@ -37,3 +37,4 @@ The deploy runs `webpack` which drops `bundle.js` inside a `dist` folder. The `d
 - Configure CI via CircleCI
 - Fill out Stats and Settings component
 - User auth system to persist user data
+- Setup BitcoinTicker to be standalone crypto UI component using this API https://www.cryptonator.com/api
