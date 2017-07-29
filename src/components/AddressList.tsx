@@ -102,9 +102,7 @@ export default class AddressInput extends React.Component<IProps, IState> {
                     <Card.Content>
                         <Header as={'h2'} color={'blue'}>Your Addresses</Header>
                     </Card.Content>
-                    <Card.Content>
-                        {cardContent}
-                    </Card.Content>
+                    {cardContent}
                     {cardFooter}
                 </Card>
             </div>

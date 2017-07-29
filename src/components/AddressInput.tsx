@@ -52,6 +52,8 @@ export default class AddressInput extends React.Component<IProps, IState> {
                 <Card fluid>
                     <Card.Content>
                         <Header as={'h2'} color={'blue'}>Add Address to Watch</Header>
+                    </Card.Content>
+                    <Card.Content>
                         <Input fluid
                                value={this.state.newAddress}
                                onChange={this.onAddressChange}

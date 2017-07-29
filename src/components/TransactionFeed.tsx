@@ -80,6 +80,8 @@ export default class TransactionFeed extends React.Component<ITransactionFeedPro
                 <Card fluid>
                     <Card.Content>
                         <Header as={'h2'} color={'blue'}>Transaction Feed</Header>
+                    </Card.Content>
+                    <Card.Content>
                         <Feed>{this.renderTransactions(this.state.transactions)}</Feed>
                     </Card.Content>
                 </Card>

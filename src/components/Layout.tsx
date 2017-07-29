@@ -15,7 +15,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
         const navLinks: INavLink[] = [
             {
                 label: 'Dashboard',
-                route: '/',
+                route: '/dashboard',
                 icon: {
                     name: 'dashboard'
                 }
