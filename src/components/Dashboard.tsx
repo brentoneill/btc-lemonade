@@ -26,13 +26,6 @@ interface IDashboardProps {
     btcUpdatedAt: number | string;
 }
 
-interface IDashboardState {
-    addresses?: any;
-    transactions?: ITransaction[];
-    btcToUSD?: number;
-    btcUpdatedAt?: number | string;
-}
-
 export interface ITransaction {
     amount: number;
     color: string;
@@ -42,7 +35,7 @@ export interface ITransaction {
 
 import './styles/Dashboard.scss';
 
-class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
+class Dashboard extends React.Component<IDashboardProps, {}> {
 
     public socket;
 
@@ -88,7 +81,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
     }
 
     componentWillReceiveProps(nextProps: IDashboardProps) {
-        let { transactions, addresses, btcToUSD, btcUpdatedAt } = this.state;
+        let { transactions, addresses, btcToUSD, btcUpdatedAt } = this.props;
 
         if (nextProps.transactions !== this.props.transactions) {
             transactions = nextProps.transactions;
@@ -162,7 +155,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
     }
 
     render() {
-        const { transactions, addresses, btcToUSD, btcUpdatedAt } = this.state;
+        const { transactions, addresses, btcToUSD, btcUpdatedAt } = this.props;
 
         return (
             <div className="Dashboard">
