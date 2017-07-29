@@ -13,12 +13,11 @@ import Base from './components/Base';
 export default (
     <Route component={App}>
         <Route component={Layout}>
-            <Route path="/" component={Base}>
+            <Route exact path="/" render={ () => <Redirect to="/dashboard"/> }>
                 <Route path="dashboard" component={Dashboard} />
                 <Route path="stats" component={Stats} />
                 <Route path="settings" component={Settings} />
             </Route>
-            <Redirect from="/" to="dashboard"/>
         </Route>
     </Route>
 );
