@@ -3,14 +3,16 @@ import { Grid, Card } from 'semantic-ui-react';
 import axios from 'axios';
 import autobind from 'autobind-decorator';
 import { connect } from 'react-redux';
+import { toastr } from 'react-redux-toastr';
 import { bindActionCreators } from 'redux';
+
 import BitcoinTicker from './BitcoinTicker';
 import TransactionFeed, { ITransaction } from './TransactionFeed';
 import AddressList from './AddressList';
 import AddressInput from './AddressInput';
 import Socket from '../services/Socket';
 import { convertBTCtoUSD, convertFromSatoshi } from '../util';
-import { toastr } from 'react-redux-toastr';
+
 
 import { addAddress, addTransactions, updateBTC, fetchAddress } from '../actions';
 
@@ -75,9 +77,7 @@ class Dashboard extends React.Component<IDashboardProps, {}> {
     }
 
     componentWillMount() {
-        // Test addreses - uncomment to hydrate components
-        // this.onAddAddress('1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX');
-        // this.onAddAddress('1NxaBCFQwejSZbQfWcYNwgqML5wWoE3rK4');
+        // Hydrate with user addresses
     }
 
     componentWillReceiveProps(nextProps: IDashboardProps) {
@@ -93,7 +93,6 @@ class Dashboard extends React.Component<IDashboardProps, {}> {
             addresses.forEach(address => {
                 this.unsubscribeToAddress(address.address);
                 this.subscribeToAddress(address.address);
-                // this.pingSubscribedAddresses();
             });
         }
 

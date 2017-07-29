@@ -4,13 +4,10 @@ import axios from 'axios';
 import { Card, Loader, Icon, Header, Statistic } from 'semantic-ui-react';
 const currencyFormatter = require('currency-formatter');
 
-import { store } from '../';
-import { updateBTC } from '../actions';
-
 import './styles/BitcoinTicker.scss';
 
 export interface IBitcoinTickerProps {
-    currencyPair?: string; // ltcusd or btcusd
+    currencyPair?: string; // ltcusd or btcusd or ethusd
     animateOnUpdate?: boolean;
     showTimestamp?: boolean;
     onChange: (orderData: any) => void;
@@ -20,8 +17,7 @@ export interface IBitcoinTrackerState {
     currencyPair?: string;
     currentPrice?: number;
     updating?: boolean;
-    // time is epoch
-    time?: number | Date;
+    time?: number | Date; // time is epoch
 }
 
 export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, IBitcoinTrackerState> {
