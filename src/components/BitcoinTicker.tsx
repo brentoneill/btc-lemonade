@@ -135,6 +135,9 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
             card = (
                 <Card fluid>
                     <Card.Content>
+                        <Header as={'h2'} color={'blue'}>Your Addresses</Header>
+                    </Card.Content>
+                    <Card.Content>
                         <Loader active>
                             Loading...
                         </Loader>
@@ -144,6 +147,9 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
         } else {
             card = (
                 <Card fluid>
+                    <Card.Content>
+                        <Header as={'h2'} color={'blue'}>BTC TO USD</Header>
+                    </Card.Content>
                     <Card.Content>
                         <Statistic color="blue">
                             <Statistic.Value>{currencyFormatter.format(currentPrice, { code: 'USD' })}</Statistic.Value>
