@@ -6,15 +6,12 @@ import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
 import { bindActionCreators } from 'redux';
 
-import BitcoinTicker from './BitcoinTicker';
-import TransactionFeed, { ITransaction } from './TransactionFeed';
-import AddressList from './AddressList';
-import AddressInput from './AddressInput';
+import { BitcoinTicker, TransactionFeed, AddressList, AddressInput } from '../components';
 import Socket from '../services/Socket';
 import { convertBTCtoUSD, convertFromSatoshi } from '../util';
-
-
 import { addAddress, addTransactions, updateBTC, fetchAddress } from '../actions';
+
+import './styles/Dashboard.scss';
 
 interface IDashboardProps {
     // redux actions
@@ -27,15 +24,6 @@ interface IDashboardProps {
     btcToUSD: number;
     btcUpdatedAt: number | string;
 }
-
-export interface ITransaction {
-    amount: number;
-    color: string;
-    timestamp: string | number;
-    payee: string;
-}
-
-import './styles/Dashboard.scss';
 
 class Dashboard extends React.Component<IDashboardProps, {}> {
 
@@ -54,7 +42,6 @@ class Dashboard extends React.Component<IDashboardProps, {}> {
         this.socket = new Socket(uri, type);
 
         this.socket.connection.onmessage = (message) => {
-            console.log(JSON.parse(message.data));
             const data = JSON.parse(message.data);
             if (data.op === 'utx') {
                 // do some data conversion to difference in apis

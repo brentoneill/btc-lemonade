@@ -5,10 +5,9 @@ import { createStore, applyMiddleware } from 'redux';
 import { Router, browserHistory } from 'react-router';
 import ReduxToastr from 'react-redux-toastr';
 
-import routes from './Routes';
+import routes from './routes';
 import reducers from './reducers';
 const promise = require('redux-promise');
-
 import 'semantic-ui-css/semantic.min.css';
 
 const createStoreWithMiddleware = applyMiddleware(

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Route, IndexRoute, Redirect } from 'react-router';
 
-import App from './components/App';
-import Layout from './components/Layout';
-import Dashboard from './components/Dashboard';
-import Stats from './components/Stats';
-import Settings from './components/Settings';
-import Base from './components/Base';
+import { App, Layout, Base } from '../components';
+
+import Dashboard from './Dashboard';
+import Stats from './Stats';
+import Settings from './Settings';
+
 
 // NOTE: Stats and settings tabs are stubbed for future development, but have
 //       no content currently.

@@ -19,10 +19,6 @@ export default class Socket {
         this.connection.onmessage = this.onMessage;
     }
 
-    onOpen(evt) {
-        this.setupPing();
-    }
-
     setupPing() {
         const msg = { 'op': 'ping' };
         this.sendMessage(msg);
@@ -31,6 +27,9 @@ export default class Socket {
         }, 15000);
     }
 
+    onOpen(evt) {
+        this.setupPing();
+    }
 
     onError(error) {
         console.warn(error);

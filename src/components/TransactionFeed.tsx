@@ -2,7 +2,6 @@ import * as React from 'react';
 import axios from 'axios';
 import { Card, Feed, Header, Button, Icon, Modal } from 'semantic-ui-react';
 
-import { store } from '../';
 import Socket from '../services/Socket';
 import { stringToColour, convertBTCtoUSD, convertFromSatoshi } from '../util';
 
