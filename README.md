@@ -33,8 +33,10 @@ The deploy runs `webpack` which drops `bundle.js` inside a `dist` folder. The `d
 
 # Roadmap
 
-- Add more types
-- Configure CI via CircleCI
-- Fill out Stats and Settings component
+- ~Configure CI via CircleCI~
 - User auth system to persist user data
+- Fill out Stats and Settings component
 - Setup BitcoinTicker to be standalone crypto UI component using this API https://www.cryptonator.com/api
+- Setup StoryBook - https://github.com/storybooks/storybook
+- Switch to StyleComponents
+- Continue to add more types/interfaces
