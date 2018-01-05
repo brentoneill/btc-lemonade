@@ -7,7 +7,7 @@
 
 3. Run Webpack dev server for local dev: `yarn start`
 
-4. Open up your browser and head to `http://localhost:4000`
+4. Open up your browser and head to `http://localhost:3000`
 
 Webpack will re-compile on file save and auto refresh the browser.
 
