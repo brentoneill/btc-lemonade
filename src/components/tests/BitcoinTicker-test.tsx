@@ -6,7 +6,8 @@ import BitcoinTicker from '../BitcoinTicker';
 const defaultProps = {
     showTimestamp: true,
     currencyPair: 'btcusd',
-    onChange: sinon.spy()
+    onChange: sinon.spy(),
+    title: 'BTC to USD'
 };
 
 describe('<BitcoinTicker /> component', () => {
@@ -15,6 +16,11 @@ describe('<BitcoinTicker /> component', () => {
     it('should render a div with className .BitcoinTicker and a Card with Loader', () => {
         expect(bitcoinTicker.find('.BitcoinTicker').length).toBe(1);
         expect(bitcoinTicker.find('Card').length).toBe(1);
+    });
+
+    it('should render the correct title', () => {
+        expect(bitcoinTicker.find('.BitcoinTicker__header').length).toBe(1);
+        expect(bitcoinTicker.find('.BitcoinTicker__header').props().children).toEqual(defaultProps.title);
     });
 
     it('should render a Loader when there is no currentPrice', () => {

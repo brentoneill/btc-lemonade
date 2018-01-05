@@ -15,7 +15,6 @@ describe('<Layout /> component', () => {
     });
 
     it('should render a connected <Header /> component with className .Layout--header', () => {
-        console.log(layout.debug());
         expect(layout.find('Connect(Header)').length).toBe(1);
         expect(layout.find('Connect(Header)').props().className).toContain('Layout__header');
     });

@@ -11,16 +11,17 @@ export interface IBitcoinTickerProps {
     animateOnUpdate?: boolean;
     showTimestamp?: boolean;
     onChange: (orderData: any) => void;
+    title: string;
 }
 
-export interface IBitcoinTrackerState {
+export interface IBitcoinTickerState {
     currencyPair?: string;
     currentPrice?: number;
     updating?: boolean;
     time?: number | Date; // time is epoch
 }
 
-export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, IBitcoinTrackerState> {
+export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, IBitcoinTickerState> {
 
     public socketBitStamp;
     private tradesChannel;
@@ -119,8 +120,10 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
             case 'ltcusd':
                 iconName = 'viacoin';
                 break;
-            default:
+            case 'ethusd':
+                iconName = 'ethcoin';
             case 'btcusd':
+            default:
                 iconName = 'bitcoin';
                 break;
         }
@@ -135,7 +138,7 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
             card = (
                 <Card fluid>
                     <Card.Content>
-                        <Header as={'h2'} color={'blue'}>Your Addresses</Header>
+                        <Header className="BitcoinTicker__header" as={'h2'} color={'blue'}>{this.props.title}</Header>
                     </Card.Content>
                     <Card.Content>
                         <Loader active>
@@ -148,7 +151,7 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
             card = (
                 <Card fluid>
                     <Card.Content>
-                        <Header as={'h2'} color={'blue'}>BTC TO USD</Header>
+                        <Header className="BitcoinTicker__header" as={'h2'} color={'blue'}>{this.props.title}</Header>
                     </Card.Content>
                     <Card.Content>
                         <Statistic color="blue">

@@ -43,6 +43,7 @@ class Dashboard extends React.Component<IDashboardProps, {}> {
 
         this.socket.connection.onmessage = (message) => {
             const data = JSON.parse(message.data);
+            console.log(data);
             if (data.op === 'utx') {
                 // do some data conversion to difference in apis
                 data.confirmed = new Date(0).setUTCSeconds(data.x.time);
@@ -136,8 +137,14 @@ class Dashboard extends React.Component<IDashboardProps, {}> {
     }
 
     @autobind
-    updateBTCExchangerate(order): void {
+    updateBTCExchangeRate(order): void {
+        console.log(order);
         this.props.updateBTC(order);
+    }
+
+    @autobind
+    updateETHExchangeRate(order): void {
+        console.log(order);
     }
 
     render() {
@@ -148,11 +155,18 @@ class Dashboard extends React.Component<IDashboardProps, {}> {
                 <Grid stackable={true}>
                     <Grid.Row columns={16}>
                         <Grid.Column width={6}>
-                            <BitcoinTicker onChange={this.updateBTCExchangerate}
+                            <BitcoinTicker title="BTC to USD"
+                                           onChange={this.updateBTCExchangeRate}
                                            currencyPair={'btcusd'}
                                            animateOnUpdate={true}
                                            showTimestamp={true}/>
+                           <BitcoinTicker title="ETH TO USD"
+                                          onChange={this.updateETHExchangeRate}
+                                          currencyPair={'ethusd'}
+                                          animateOnUpdate={true}
+                                          showTimestamp={true}/>
                             <AddressList addresses={addresses} btcToUSD={btcToUSD}/>
+
                         </Grid.Column>
                         <Grid.Column width={10}>
                             <AddressInput onAddAddress={this.onAddAddress}/>
