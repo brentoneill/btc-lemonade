@@ -6,3 +6,4 @@ dist
 # IntelliJ
 *.iml
 /.idea
+*.log
