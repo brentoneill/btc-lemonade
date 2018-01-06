@@ -5,7 +5,6 @@
     "main": "server.js",
     "repository": "git@github.com:brentoneill/btc-lemonade.git",
     "scripts": {
-        "postinstall": "npm run build",
         "build": "webpack",
         "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
         "test": "karma start --single-run --no-auto-watch --no-sandbox --browsers ChromeHeadless karma.conf.js",
