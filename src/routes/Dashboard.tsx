@@ -147,6 +147,11 @@ class Dashboard extends React.Component<IDashboardProps, {}> {
         console.log(order);
     }
 
+    @autobind
+    updateXRPExchangeRate(order): void {
+        console.log(order);
+    }
+
     render() {
         const { transactions, addresses, btcToUSD, btcUpdatedAt } = this.props;
 
@@ -165,11 +170,15 @@ class Dashboard extends React.Component<IDashboardProps, {}> {
                                           currencyPair={'ethusd'}
                                           animateOnUpdate={true}
                                           showTimestamp={true}/>
-                            <AddressList addresses={addresses} btcToUSD={btcToUSD}/>
-
+                           <BitcoinTicker title="XRP TO USD"
+                                          onChange={this.updateXRPExchangeRate}
+                                          currencyPair={'xrpusd'}
+                                          animateOnUpdate={true}
+                                          showTimestamp={true}/>
                         </Grid.Column>
                         <Grid.Column width={10}>
                             <AddressInput onAddAddress={this.onAddAddress}/>
+                            <AddressList addresses={addresses} btcToUSD={btcToUSD}/>
                             <TransactionFeed transactions={transactions} btcToUSD={btcToUSD} />
                         </Grid.Column>
                     </Grid.Row>

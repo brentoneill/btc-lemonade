@@ -7,12 +7,12 @@ import { stringToColour, convertBTCtoUSD, convertFromSatoshi } from '../util';
 
 import './styles/TransactionFeed.scss';
 
-interface ITransactionFeedProps {
+export interface ITransactionFeedProps {
     transactions?: ITransaction[];
     btcToUSD?: number;
 }
 
-interface ITransactionFeedState {
+export interface ITransactionFeedState {
     transactions?: ITransaction[];
     btcToUSD?: number;
 }

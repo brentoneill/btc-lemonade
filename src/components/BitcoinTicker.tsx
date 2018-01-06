@@ -47,17 +47,21 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
 
     componentWillMount() {
         const { currencyPair } = this.props;
-        // Initialize the price
-        axios.get(`https://blockchain.info/ticker?cors=true`)
-            .then(res => {
-                if (res && res.data) {
-                    const price = res.data.USD.last;
-                    const timestamp = new Date();
-                    const data = { price, timestamp };
-                    this.props.onChange(data);
-                    this.setState({ currentPrice: price, time: timestamp });
-                }
-            });
+        switch (currencyPair) {
+            case 'btcusd':
+                // Initialize the price
+                axios.get(`https://blockchain.info/ticker?cors=true`)
+                    .then(res => {
+                        if (res && res.data) {
+                            const price = res.data.USD.last;
+                            const timestamp = new Date();
+                            const data = { price, timestamp };
+                            this.props.onChange(data);
+                            this.setState({ currentPrice: price, time: timestamp });
+                        }
+                    });
+
+        }
 
         // Bind an event to the 'trade' event on the live_trades channel
         this.tradesChannel.bind('trade', data => {

@@ -3,6 +3,12 @@
 .BitcoinTicker {
     .content {
         text-align: center;
+        &:nth-child(2) {
+          min-height: 118px;
+          .ui.active.loader {
+              margin-top: 20px;
+          }
+        }
     }
 
     .extra {
@@ -13,5 +19,11 @@
         margin-bottom: 4px;
         font-weight: 300;
         text-align: left;
+    }
+}
+
+.ui.active.loader {
+    &:after {
+        border-color: $blue transparent transparent;
     }
 }
