@@ -1,13 +1,41 @@
-# Javascript Node CircleCI 2.0 configuration file
+# BTC-Lemonade configs
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
 jobs:
-  build:
+  build-job:
     docker:
       # specify the version you desire here
-      - image: circleci/node:7.10-browsers
+      - image: circleci/node:8.0
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      # Force a cache clean
+      # - run: yarn cache clean
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run: yarn build
+
+  test-job:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:8.0-browsers
         environment:
           CHROME_BIN: "/usr/bin/google-chrome"
 
@@ -27,7 +55,10 @@ jobs:
           - v1-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
-      - run: yarn cache clean
+
+      # Force a cache clean
+      # - run: yarn cache clean
+
       - run: yarn install
 
       - save_cache:
@@ -35,12 +66,43 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run: yarn build
-
-      # run tests!
       - run: yarn test
-  # deployment:
-  #   production:
-  #     branch: master
-  #     heroku:
-  #       appname: btc-lemonade
+
+  deploy-job:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:8.0
+
+    working_directory: ~/repo
+
+    steps:
+      - run:
+          name: Run setup script
+          command: bash .circleci/setup-heroku.sh
+      - add_ssh_keys:
+          # NOTE: Must be changed when switching to new project
+          fingerprints:
+            # From the ssh permissions tab on circleCI - git.heroku.com
+            - "9e:c6:cc:09:e0:14:2c:c0:74:ed:b4:be:9a:a6:68:42"
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push --force git@heroku.com:$HEROKU_APP_NAME.git HEAD:refs/heads/master
+            heroku run python manage.py deploy
+            heroku restart
+
+# Build, test, then deploy
+## Only fires on master branch commits
+workflows:
+  version: 2
+  build-test-and-deploy:
+    jobs:
+      - build-job
+      - test-job
+      - deploy-job:
+           requires:
+             - build-job
+             - test-job
+           filters:
+             branches:
+               only: master
