@@ -45,8 +45,6 @@ describe('<BitcoinTicker /> component', () => {
         expect(bitcoinTicker.find('CardContent').at(2).find('.BitcoinTicker__time').length).toBe(1);
     });
 
-
-
     it('should fire the onChange callback on initial load', () => {
         expect(defaultProps.onChange.calledOnce).toBe(true);
     });

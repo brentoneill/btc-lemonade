@@ -6,7 +6,7 @@
         &:nth-child(2) {
           min-height: 80px;
           .ui.active.loader {
-              margin-top: 20px;
+              margin-top: 30px;
           }
         }
     }
@@ -23,6 +23,10 @@
           margin-right: 10px;
           vertical-align: baseline;
         }
+    }
+
+    .ui.statistic:first-child {
+        margin-top: 2px;
     }
 
     .ui.statistic>.value,
