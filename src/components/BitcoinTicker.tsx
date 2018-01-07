@@ -5,19 +5,21 @@ import { Card, Loader, Icon, Header, Statistic } from 'semantic-ui-react';
 const currencyFormatter = require('currency-formatter');
 
 import './styles/BitcoinTicker.scss';
+require('cryptocoins-icons/webfont/cryptocoins.css');
 
 export interface IBitcoinTickerProps {
-    currencyPair?: string; // ltcusd or btcusd or ethusd
+    currencyPair?: string; // ltcusd or btcusd or ethusd or
     animateOnUpdate?: boolean;
     showTimestamp?: boolean;
-    onChange: (orderData: any) => void;
     title: string;
+    onChange: (orderData: any) => void;
 }
 
 export interface IBitcoinTickerState {
     currencyPair?: string;
     currentPrice?: number;
     updating?: boolean;
+    direction?: string;
     time?: number | Date; // time is epoch
 }
 
@@ -69,9 +71,16 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
                 this.props.onChange(data);
             }
 
-            this.setState({ currentPrice: data.price, updating: true, time: parseInt(data.timestamp) }, () => {
+            const oldPrice = this.state.currentPrice;
+
+            this.setState({
+              currentPrice: data.price,
+              updating: true,
+              direction: oldPrice > data.price ? 'dec' : 'inc',
+              time: parseInt(data.timestamp)
+            }, () => {
                 setTimeout(() => {
-                    this.setState({ updating: false });
+                    this.setState({ updating: false, direction: 'even' });
                 }, 1500);
             });
         });
@@ -113,22 +122,26 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
     }
 
     render(): JSX.Element {
-        const { updating, currentPrice, time } = this.state;
+        const { updating, currentPrice, time, direction } = this.state;
         const { showTimestamp, currencyPair } = this.props;
 
-        const cssClasses = ['BitcoinTicker'];
+        const cssClasses = ['BitcoinTicker', `BitcoinTicker--${direction}`];
         const timeStamp = this.renderTimestamp(showTimestamp, time);
 
         let iconName;
         switch (currencyPair) {
+            case 'xrpusd':
+                iconName = 'XRP-alt';
+                break;
             case 'ltcusd':
-                iconName = 'viacoin';
+                iconName = 'LTC-alt';
                 break;
             case 'ethusd':
-                iconName = 'ethcoin';
+                iconName = 'ETH-alt';
+                break;
             case 'btcusd':
             default:
-                iconName = 'bitcoin';
+                iconName = 'BTC-alt';
                 break;
         }
 
@@ -142,7 +155,10 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
             card = (
                 <Card fluid>
                     <Card.Content>
-                        <Header className="BitcoinTicker__header" as={'h2'} color={'blue'}>{this.props.title}</Header>
+                        <Header className="BitcoinTicker__header" as={'h2'} color={'blue'}>
+                            <span className={`cc ${iconName}`}></span>
+                            {this.props.title}
+                        </Header>
                     </Card.Content>
                     <Card.Content>
                         <Loader active>
@@ -155,12 +171,14 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
             card = (
                 <Card fluid>
                     <Card.Content>
-                        <Header className="BitcoinTicker__header" as={'h2'} color={'blue'}>{this.props.title}</Header>
+                        <Header className="BitcoinTicker__header" as={'h2'} color={'blue'}>
+                            <span className={`cc ${iconName}`}></span>
+                            {this.props.title}
+                        </Header>
                     </Card.Content>
                     <Card.Content>
                         <Statistic color="blue">
-                            <Statistic.Value>{currencyFormatter.format(currentPrice, { code: 'USD' })}</Statistic.Value>
-                            <Statistic.Label>1<Icon name={iconName} /></Statistic.Label>
+                            <Statistic.Value>{currencyFormatter.format(currentPrice, { code: 'USD', decimalDigits: parseInt(currentPrice) >= 1000 ? 2 : 0 })}</Statistic.Value>
                         </Statistic>
                     </Card.Content>
                     <Card.Content extra>

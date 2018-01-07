@@ -10,6 +10,11 @@ machine api.heroku.com
   password $HEROKU_API_KEY
 EOF
 
+# Hack to make the config step work
+cd ..
+ls -al
+mkdir .ssh && cd .ssh && touch config
+
 cat >> ~/.ssh/config << EOF
 VerifyHostKeyDNS yes
 StrictHostKeyChecking no

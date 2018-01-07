@@ -8,7 +8,7 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:8.0
 
-    working_directory: ~/repo
+    working_directory: ~/btc-lemonade
 
     steps:
       - checkout
@@ -44,7 +44,7 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-    working_directory: ~/repo
+    working_directory: ~/btc-lemonade
 
     steps:
       - checkout
@@ -73,23 +73,22 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:8.0
 
-    working_directory: ~/repo
+    working_directory: ~/btc-lemonade
 
     steps:
-      - run:
-          name: Run setup script
-          command: bash .circleci/setup-heroku.sh
+      - checkout
       - add_ssh_keys:
           # NOTE: Must be changed when switching to new project
           fingerprints:
             # From the ssh permissions tab on circleCI - git.heroku.com
             - "9e:c6:cc:09:e0:14:2c:c0:74:ed:b4:be:9a:a6:68:42"
       - run:
+          name: Run heroku setup script
+          command: bash ./.circleci/setup-heroku.sh
+      - run:
           name: Deploy Master to Heroku
           command: |
-            git push --force git@heroku.com:$HEROKU_APP_NAME.git HEAD:refs/heads/master
-            heroku run python manage.py deploy
-            heroku restart
+            git push --force git@heroku.com:btc-lemonade.git HEAD:refs/heads/master && heroku run node server.js && heroku restart
 
 # Build, test, then deploy
 ## Only fires on master branch commits
