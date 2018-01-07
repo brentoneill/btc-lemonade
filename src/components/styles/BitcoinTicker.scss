@@ -4,7 +4,7 @@
     .content {
         text-align: center;
         &:nth-child(2) {
-          min-height: 118px;
+          min-height: 80px;
           .ui.active.loader {
               margin-top: 20px;
           }
@@ -23,6 +23,11 @@
           margin-right: 10px;
           vertical-align: baseline;
         }
+    }
+
+    .ui.statistic>.value,
+    .ui.statistics .statistic>.value {
+        font-size: 3rem !important;
     }
 }
 

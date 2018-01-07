@@ -178,7 +178,7 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
                     </Card.Content>
                     <Card.Content>
                         <Statistic color="blue">
-                            <Statistic.Value>{currencyFormatter.format(currentPrice, { code: 'USD', decimalDigits: parseInt(currentPrice) >= 1000 ? 2 : 0 })}</Statistic.Value>
+                            <Statistic.Value>{currencyFormatter.format(currentPrice, { code: 'USD' })}</Statistic.Value>
                         </Statistic>
                     </Card.Content>
                     <Card.Content extra>
