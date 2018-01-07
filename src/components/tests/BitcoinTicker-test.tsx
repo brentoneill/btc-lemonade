@@ -20,7 +20,12 @@ describe('<BitcoinTicker /> component', () => {
 
     it('should render the correct title', () => {
         expect(bitcoinTicker.find('.BitcoinTicker__header').length).toBe(1);
-        expect(bitcoinTicker.find('.BitcoinTicker__header').props().children).toEqual(defaultProps.title);
+        expect(bitcoinTicker.find('.BitcoinTicker__header').props().children[1]).toEqual(defaultProps.title);
+    });
+
+    it('should render the correct icon for each currency inside the title', () => {
+        expect(bitcoinTicker.find('.BitcoinTicker__header span').length).toEqual(1);
+        expect(bitcoinTicker.find('.BitcoinTicker__header span').props().className).toContain('BTC-alt');
     });
 
     it('should render a Loader when there is no currentPrice', () => {
@@ -34,12 +39,13 @@ describe('<BitcoinTicker /> component', () => {
         expect(bitcoinTicker.find('Statistic').length).toBe(1);
     });
 
-    // TODO: Look in to this failing test
-    // it('should render the time when there is a time on the state', () => {
-    //     bitcoinTicker.setState({ time: new Date() });
-    //     expect(bitcoinTicker.find('CardContent').at(1).find('Icon').length).toBe(1);
-    //     expect(bitcoinTicker.find('CardContent').at(1).find('.BitcoinTicker__time').length).toBe(1);
-    // });
+    it('should render the time when there is a time on the state', () => {
+        bitcoinTicker.setState({ time: new Date() });
+        expect(bitcoinTicker.find('CardContent').at(2).find('Icon').length).toBe(1);
+        expect(bitcoinTicker.find('CardContent').at(2).find('.BitcoinTicker__time').length).toBe(1);
+    });
+
+
 
     it('should fire the onChange callback on initial load', () => {
         expect(defaultProps.onChange.calledOnce).toBe(true);
