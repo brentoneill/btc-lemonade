@@ -92,16 +92,16 @@ jobs:
 
 # Build, test, then deploy
 ## Only fires on master branch commits
-workflows:
-  version: 2
-  build-test-and-deploy:
-    jobs:
-      - build-job
-      - test-job
-      - deploy-job:
-           requires:
-             - build-job
-             - test-job
-           filters:
-             branches:
-               only: master
+# workflows:
+#   version: 2
+#   build-test-and-deploy:
+#     jobs:
+#       - build-job
+#       - test-job
+#       - deploy-job:
+#            requires:
+#              - build-job
+#              - test-job
+#            filters:
+#              branches:
+#                only: master

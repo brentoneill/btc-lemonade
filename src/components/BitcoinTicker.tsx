@@ -162,7 +162,7 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
                     </Card.Content>
                     <Card.Content>
                         <Loader active>
-                            Loading...
+                            Waiting for transactions...
                         </Loader>
                     </Card.Content>
                 </Card>
