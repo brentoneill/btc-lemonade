@@ -33,6 +33,21 @@
     .ui.statistics .statistic>.value {
         font-size: 3rem !important;
     }
+
+    .ui.card {
+        transition: background-color .15s ease-in-out;
+    }
+
+    &.BitcoinTicker--inc {
+        .ui.card {
+            background-color: rgba(green, .15);
+        }
+    }
+    &.BitcoinTicker--dec {
+        .ui.card {
+            background-color: rgba(red, .15);
+        }
+    }
 }
 
 .ui.active.loader {
