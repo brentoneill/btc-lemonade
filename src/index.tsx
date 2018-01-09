@@ -19,7 +19,7 @@ export const store = createStoreWithMiddleware(reducers);
 
 ReactDOM.render(
   <Provider store={store}>
-    <div>
+    <div className="App">
         <Router history={browserHistory} routes={routes} />
         <ReduxToastr
             timeOut={4000}

@@ -9,13 +9,15 @@ import { bindActionCreators } from 'redux';
 import { BitcoinTicker, TransactionFeed, AddressList, AddressInput } from '../components';
 import Socket from '../services/Socket';
 import { convertBTCtoUSD, convertFromSatoshi } from '../util';
-import { addAddress, addTransactions, updateBTC, fetchAddress } from '../actions';
+import { addAddress, fetchAddress, addTransactions, updateBTC, updateETH, updateXRP } from '../actions';
 
 import './styles/Dashboard.scss';
 
 interface IDashboardProps {
     // redux actions
     updateBTC: Function;
+    updateETH: Function;
+    updateXRP: Function;
     addAddress: Function;
     addTransactions: Function;
     // data
@@ -43,7 +45,6 @@ class Dashboard extends React.Component<IDashboardProps, {}> {
 
         this.socket.connection.onmessage = (message) => {
             const data = JSON.parse(message.data);
-            console.log(data);
             if (data.op === 'utx') {
                 // do some data conversion to difference in apis
                 data.confirmed = new Date(0).setUTCSeconds(data.x.time);
@@ -64,8 +65,14 @@ class Dashboard extends React.Component<IDashboardProps, {}> {
         };
     }
 
-    componentWillMount() {
+
+    componentDidMount() {
         // Hydrate with user addresses
+        setTimeout(() => {
+            this.onAddAddress('1dice8EMZmqKvrGE4Qc9bUFf9PX3xaYDp');
+            this.onAddAddress('1LuckyR1fFHEsXYyx5QK4UFzv3PEAepPMK');
+            this.onAddAddress('1VayNert3x1KzbpzMGt2qdqrAThiRovi8');
+        }, 1000);
     }
 
     componentWillReceiveProps(nextProps: IDashboardProps) {
@@ -79,7 +86,7 @@ class Dashboard extends React.Component<IDashboardProps, {}> {
             addresses = nextProps.addresses;
             // resubscribe to new addresses
             addresses.forEach(address => {
-                this.unsubscribeToAddress(address.address);
+                // this.unsubscribeToAddress(address.address);
                 this.subscribeToAddress(address.address);
             });
         }
@@ -143,10 +150,12 @@ class Dashboard extends React.Component<IDashboardProps, {}> {
 
     @autobind
     updateETHExchangeRate(order): void {
+        this.props.updateETH(order);
     }
 
     @autobind
     updateXRPExchangeRate(order): void {
+        this.props.updateXRP(order);
     }
 
     render() {
@@ -198,8 +207,10 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addAddress: bindActionCreators(addAddress, dispatch),
         addTransactions: bindActionCreators(addTransactions, dispatch),
+        fetchAddress: bindActionCreators(fetchAddress, dispatch),
         updateBTC: bindActionCreators(updateBTC, dispatch),
-        fetchAddress: bindActionCreators(fetchAddress, dispatch)
+        updateETH: bindActionCreators(updateETH, dispatch),
+        updateXRP: bindActionCreators(updateXRP, dispatch)
     };
 };
 

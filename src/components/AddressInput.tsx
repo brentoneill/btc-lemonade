@@ -15,13 +15,6 @@ interface IState {
     loading?: boolean;
 }
 
-export interface IBitcoinAddress {
-    name?: string;
-    address: string;
-    balance?: number;
-    totalReceived?: number;
-}
-
 export default class AddressInput extends React.Component<IProps, IState> {
     private input;
 

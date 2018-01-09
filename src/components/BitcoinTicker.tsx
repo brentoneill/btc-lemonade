@@ -87,6 +87,7 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
     }
 
     componenetWillUnMount() {
+        this.socketBitStamp.
         this.socketBitStamp.disconnect();
     }
 

@@ -1,8 +1,12 @@
 import * as React from 'react';
 import autobind from 'autobind-decorator';
+import axios from 'axios';
 import { Card, Header, Feed, Icon } from 'semantic-ui-react';
 
+import { ICryptoAddress } from '../actions';
 import { stringToColour, convertBTCtoUSD, convertFromSatoshi } from '../util';
+
+import './styles/AddressList.scss';
 
 interface IProps {
     addresses: any;
@@ -15,21 +19,10 @@ interface IState {
     btcToUSD?: number;
 }
 
-export interface IBitcoinAddress {
-    name?: string;
-    address: string;
-    balance?: number;
-    totalReceived?: number;
-}
-
 export default class AddressInput extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
-        props.addresses.push({
-            address: '1dice8EMZmqKvrGE4Qc9bUFf9PX3xaYDp',
-            name: 'SatoshiDICE 48%'
-        });
 
         this.state = {
             addresses: props.addresses,
@@ -71,18 +64,21 @@ export default class AddressInput extends React.Component<IProps, IState> {
                 <Card.Content>
                     <Feed>
                         {addresses.map((address, i) => {
-                            return (
-                                <Feed.Event key={i}>
-                                    <Feed.Label>
-                                        <div style={{ backgroundColor: stringToColour(address.address) }} className={'circle'}></div>
-                                    </Feed.Label>
-                                    <Feed.Content>
-                                        <span className="block">{address.address}</span>
-                                        <small>Balance: {convertBTCtoUSD(address.balance, this.state.btcToUSD)}&nbsp;
-                                        <span className="text-gray">({address.balance && convertFromSatoshi(address.balance) || !address.balance && 0}<Icon style={{ marginRight: 0 }}name="bitcoin"/>)</span></small>
-                                    </Feed.Content>
-                                </Feed.Event>
-                            );
+                            if (address.address) {
+                                return (
+                                    <Feed.Event key={i}>
+                                        <Feed.Label>
+                                            <div style={{ backgroundColor: stringToColour(address.address) }} className={'circle'}></div>
+                                        </Feed.Label>
+                                        <Feed.Content>
+                                            <small className="block">{address.name}</small>
+                                            <span className="block">{address.address}</span>
+                                            <small>Balance: {convertBTCtoUSD(this.state.btcToUSD, convertFromSatoshi(address.balance))}&nbsp;
+                                            <span className="text-gray">({address.balance && convertFromSatoshi(address.balance) || !address.balance && 0}<Icon style={{ marginRight: 0 }}name="bitcoin"/>)</span></small>
+                                        </Feed.Content>
+                                    </Feed.Event>
+                                );
+                            }
                         })}
                     </Feed>
                 </Card.Content>
@@ -96,16 +92,40 @@ export default class AddressInput extends React.Component<IProps, IState> {
         }
     }
 
+    getTotalBalance(addresses: ICryptoAddress[]): number {
+        let total = 0;
+
+        if (addresses && addresses.length) {
+            addresses.forEach(address => {
+                total = total + convertFromSatoshi(address.final_balance);
+            });
+        }
+
+        return total;
+    }
+
+    renderTotalBalance(balance: number): JSX.Element | null {
+        if (balance) {
+            return <small className="AddressList__balance">Your balance: {balance}</small>
+        } else {
+            return null;
+        }
+    }
+
     render(): JSX.Element | null {
-        const { addresses, updatedAt } = this.state;
+        const { addresses, updatedAt, btcToUSD } = this.state;
         const cardContent = this.renderCardContent(addresses);
         const cardFooter = this.renderCardFooter(updatedAt);
+        const totalBalanceMarkup = this.renderTotalBalance(convertBTCtoUSD(btcToUSD, this.getTotalBalance(addresses)));
 
         return (
             <div className="AddressList">
                 <Card fluid>
                     <Card.Content>
-                        <Header as={'h2'} color={'blue'}>Your Addresses</Header>
+                        <Header as={'h2'} color={'blue'}>
+                            Your Addresses
+                            {totalBalanceMarkup}
+                        </Header>
                     </Card.Content>
                     {cardContent}
                     {cardFooter}

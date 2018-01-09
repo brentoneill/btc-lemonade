@@ -56,11 +56,10 @@ export default class TransactionFeed extends React.Component<ITransactionFeedPro
                 return (
                     <Feed.Event key={i}>
                         <Feed.Label>
-                            <div style={{ backgroundColor: stringToColour(tx.address) }} className={'circle'}>
-                            </div>
+                            <div style={{ backgroundColor: stringToColour(tx.address) }} className={'circle'}></div>
                         </Feed.Label>
                         <Feed.Content>
-                            <span className="block">You were paid {convertBTCtoUSD(tx.value, this.state.btcToUSD)} <span className="text-gray">({convertFromSatoshi(tx.value)}<Icon style={{ marginRight: 0 }}name="bitcoin"/>)</span></span>
+                            <span className="block">You were paid {convertBTCtoUSD(convertFromSatoshi(tx.value), this.state.btcToUSD)} <span className="text-gray">({convertFromSatoshi(tx.value)}<Icon style={{ marginRight: 0 }}name="bitcoin"/>)</span></span>
                             <small>On {new Date(tx.confirmed).toLocaleDateString()} at {new Date(tx.confirmed).toLocaleTimeString()}</small>
                         </Feed.Content>
                     </Feed.Event>
