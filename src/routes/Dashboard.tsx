@@ -69,9 +69,11 @@ class Dashboard extends React.Component<IDashboardProps, {}> {
     componentDidMount() {
         // Hydrate with user addresses
         setTimeout(() => {
-            this.onAddAddress('1dice8EMZmqKvrGE4Qc9bUFf9PX3xaYDp');
-            this.onAddAddress('1LuckyR1fFHEsXYyx5QK4UFzv3PEAepPMK');
-            this.onAddAddress('1VayNert3x1KzbpzMGt2qdqrAThiRovi8');
+            if (!this.props.addresses.length) {
+                this.onAddAddress('1dice8EMZmqKvrGE4Qc9bUFf9PX3xaYDp');
+                this.onAddAddress('1LuckyR1fFHEsXYyx5QK4UFzv3PEAepPMK');
+                this.onAddAddress('1VayNert3x1KzbpzMGt2qdqrAThiRovi8');
+            }
         }, 1000);
     }
 
