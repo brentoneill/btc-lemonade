@@ -4,4 +4,6 @@
     border-bottom: 2px solid $gray-light;
     padding: $padding-md;
     height: $header-height;
+    background-color: $bg-color;
+    z-index: 1001;
 }

@@ -26,7 +26,10 @@ export interface IBitcoinTickerState {
 export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, IBitcoinTickerState> {
 
     public socketBitStamp;
+
     private tradesChannel;
+    private subscribeString: string;
+    private _ismounted: boolean;
 
     constructor(props: IBitcoinTickerProps) {
         super(props);
@@ -37,17 +40,17 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
         // BitStamp socket
         this.socketBitStamp = new Pusher('de504dc5763aeef9ff52');
 
-        let subscribeString: string;
         if (this.props.currencyPair === 'btcusd') {
-            subscribeString = 'live_trades';
+            this.subscribeString = 'live_trades';
         } else {
-            subscribeString = `live_trades_${this.props.currencyPair}`;
+            this.subscribeString = `live_trades_${this.props.currencyPair}`;
         }
 
-        this.tradesChannel = this.socketBitStamp.subscribe(subscribeString);
+        this.tradesChannel = this.socketBitStamp.subscribe(this.subscribeString);
     }
 
     componentWillMount() {
+        this._ismounted = true;
         const { currencyPair } = this.props;
         switch (currencyPair) {
             case 'btcusd':
@@ -79,15 +82,19 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
               direction: oldPrice > data.price ? 'dec' : 'inc',
               time: parseInt(data.timestamp)
             }, () => {
-                setTimeout(() => {
-                    this.setState({ updating: false, direction: 'even' });
-                }, 1500);
+                console.log(this._ismounted);
+                if (this._ismounted) {
+                    setTimeout(() => {
+                        this.setState({ updating: false, direction: 'even' });
+                    }, 700);
+                }
             });
         });
     }
 
-    componenetWillUnMount() {
-        this.socketBitStamp.
+    componentWillUnmount() {
+        this._ismounted = false;
+        this.socketBitStamp.unsubscribe(this.subscribeString);
         this.socketBitStamp.disconnect();
     }
 
