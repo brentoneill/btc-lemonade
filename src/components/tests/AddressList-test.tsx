@@ -13,4 +13,12 @@ describe('<AddressList /> component', () => {
     it('should render a div with className .AddressList', () => {
         expect(addressList.find('.AddressList').length).toBe(1);
     });
+
+    it('should render a total balance div with the correct className', () => {
+        expect(addressList.find('.AddressList .AddressList__balance').length).toBe(1);
+    });
+
+    it('should a list of addresses and their balances', () => {
+
+    });
 });

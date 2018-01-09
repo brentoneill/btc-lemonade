@@ -22,7 +22,7 @@ export function convertUSDtoBTC(exchangeRate: number, usdAmount: number): number
 * From: https://stackoverflow.com/questions/3426404/create-a-hexadecimal-colour-based-on-a-string-with-javascript
 * Used to transform address hash in to a unique background color for the wallet addresses
 */
-export function stringToColour(str: string): string {
+export function stringToColor(str: string): string {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
         hash = str.charCodeAt(i) + ((hash << 5) - hash);

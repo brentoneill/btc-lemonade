@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Card, Header, Feed, Icon } from 'semantic-ui-react';
 
 import { ICryptoAddress } from '../actions';
-import { stringToColour, convertBTCtoUSD, convertFromSatoshi } from '../util';
+import { stringToColor, convertBTCtoUSD, convertFromSatoshi } from '../util';
 
 import './styles/AddressList.scss';
 
@@ -68,7 +68,7 @@ export default class AddressInput extends React.Component<IProps, IState> {
                                 return (
                                     <Feed.Event key={i}>
                                         <Feed.Label>
-                                            <div style={{ backgroundColor: stringToColour(address.address) }} className={'circle'}></div>
+                                            <div style={{ backgroundColor: stringToColor(address.address) }} className={'circle'}></div>
                                         </Feed.Label>
                                         <Feed.Content>
                                             <small className="block">{address.name}</small>

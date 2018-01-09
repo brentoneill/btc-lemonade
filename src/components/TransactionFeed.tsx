@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Card, Feed, Header, Button, Icon, Modal } from 'semantic-ui-react';
 
 import Socket from '../services/Socket';
-import { stringToColour, convertBTCtoUSD, convertFromSatoshi } from '../util';
+import { stringToColor, convertBTCtoUSD, convertFromSatoshi } from '../util';
 
 import './styles/TransactionFeed.scss';
 
@@ -56,7 +56,7 @@ export default class TransactionFeed extends React.Component<ITransactionFeedPro
                 return (
                     <Feed.Event key={i}>
                         <Feed.Label>
-                            <div style={{ backgroundColor: stringToColour(tx.address) }} className={'circle'}></div>
+                            <div style={{ backgroundColor: stringToColor(tx.address) }} className={'circle'}></div>
                         </Feed.Label>
                         <Feed.Content>
                             <span className="block">You were paid {convertBTCtoUSD(convertFromSatoshi(tx.value), this.state.btcToUSD)} <span className="text-gray">({convertFromSatoshi(tx.value)}<Icon style={{ marginRight: 0 }}name="bitcoin"/>)</span></span>
