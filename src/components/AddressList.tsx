@@ -26,6 +26,11 @@ export default class AddressInput extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+        props.addresses.push({
+            address: '1dice8EMZmqKvrGE4Qc9bUFf9PX3xaYDp',
+            name: 'SatoshiDICE 48%'
+        });
+
         this.state = {
             addresses: props.addresses,
         };

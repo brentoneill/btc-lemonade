@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, IndexRoute, Redirect } from 'react-router';
+import { Route, IndexRoute, IndexRedirect } from 'react-router';
 
 import { App, Layout, Base } from '../components';
 
@@ -13,7 +13,8 @@ import Settings from './Settings';
 export default (
     <Route component={App}>
         <Route component={Layout}>
-            <Route path="/" render={ () => <Redirect to="/dashboard"/> }>
+            <Route path="/">
+                <IndexRedirect to="/dashboard" />
                 <Route path="dashboard" component={Dashboard} />
                 <Route path="stats" component={Stats} />
                 <Route path="settings" component={Settings} />

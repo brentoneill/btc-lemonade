@@ -138,18 +138,15 @@ class Dashboard extends React.Component<IDashboardProps, {}> {
 
     @autobind
     updateBTCExchangeRate(order): void {
-        console.log(order);
         this.props.updateBTC(order);
     }
 
     @autobind
     updateETHExchangeRate(order): void {
-        console.log(order);
     }
 
     @autobind
     updateXRPExchangeRate(order): void {
-        console.log(order);
     }
 
     render() {
