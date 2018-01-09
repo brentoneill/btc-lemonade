@@ -82,7 +82,6 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
               direction: oldPrice > data.price ? 'dec' : 'inc',
               time: parseInt(data.timestamp)
             }, () => {
-                console.log(this._ismounted);
                 if (this._ismounted) {
                     setTimeout(() => {
                         this.setState({ updating: false, direction: 'even' });
