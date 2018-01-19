@@ -33,16 +33,17 @@ export default class TransactionFeed extends React.Component<ITransactionFeedPro
     }
 
     componentWillReceiveProps(nextProps: ITransactionFeedProps) {
-        let { transactions, btcToUSD } = this.state;
+        let { transactions } = this.state;
 
         if (nextProps.transactions !== this.props.transactions && nextProps.transactions) {
             transactions = nextProps.transactions;
         }
 
-        if (nextProps.btcToUSD !== this.props.btcToUSD && nextProps.btcToUSD) {
-            btcToUSD = nextProps.btcToUSD;
-        }
-        this.setState({ transactions, btcToUSD });
+        // if (nextProps.btcToUSD !== this.props.btcToUSD && nextProps.btcToUSD) {
+        //     btcToUSD = nextProps.btcToUSD;
+        // }
+
+        this.setState({ transactions });
     }
 
     renderTransactions(transactions: ITransaction[]): JSX.Element[] | JSX.Element {
@@ -50,7 +51,7 @@ export default class TransactionFeed extends React.Component<ITransactionFeedPro
 
             transactions = transactions.sort((a, b) => {
                  return (new Date(b.confirmed) as any) - (new Date(a.confirmed) as any);
-            });
+            }).splice(0, 10);
 
             return transactions.map((tx, i) => {
                 return (
@@ -59,7 +60,7 @@ export default class TransactionFeed extends React.Component<ITransactionFeedPro
                             <div style={{ backgroundColor: stringToColor(tx.address) }} className={'circle'}></div>
                         </Feed.Label>
                         <Feed.Content>
-                            <span className="block">You were paid {convertBTCtoUSD(convertFromSatoshi(tx.value), this.state.btcToUSD)} <span className="text-gray">({convertFromSatoshi(tx.value)}<Icon style={{ marginRight: 0 }}name="bitcoin"/>)</span></span>
+                            <span className="block">You were paid {convertFromSatoshi(tx.value)}<Icon style={{ marginRight: 0 }}name="bitcoin"/></span>
                             <small>On {new Date(tx.confirmed).toLocaleDateString()} at {new Date(tx.confirmed).toLocaleTimeString()}</small>
                         </Feed.Content>
                     </Feed.Event>

@@ -8,6 +8,7 @@
         "postinstall": "webpack",
         "build": "webpack",
         "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+        "start-prod": "node server.js",
         "test": "karma start --single-run --no-auto-watch --no-sandbox --browsers ChromeHeadless karma.conf.js",
         "test-watch": "karma start  --no-single-run --auto-watch --browsers Chrome karma.conf.js"
     },
