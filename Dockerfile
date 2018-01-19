@@ -2,6 +2,7 @@
 FROM node:carbon
 
 RUN npm install webpack -g
+RUN npm install pm2 -g
 
 # Install deps
 WORKDIR /tmp
@@ -20,4 +21,4 @@ ENV PORT=8080
 EXPOSE 8080
 
 # Start the thing
-CMD [ "node", "./server.js" ]
+CMD ["pm2-runtime", "./server.js"]
