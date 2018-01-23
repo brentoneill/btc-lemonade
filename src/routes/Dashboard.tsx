@@ -67,7 +67,7 @@ class Dashboard extends React.Component<IDashboardProps, {}> {
 
 
     componentDidMount() {
-        // Hydrate with user addresses
+        // Hydrate with some of the more poopular BTC wallet addresses
         setTimeout(() => {
             if (!this.props.addresses.length) {
                 this.onAddAddress('1dice8EMZmqKvrGE4Qc9bUFf9PX3xaYDp');

@@ -56,7 +56,7 @@ class Sidebar extends React.Component<ISidebarProps, ISidebarState> {
                 <header className={`Sidebar--header`}>
                     <Header as={'h4'}>
                         <Icon name="lemon" color="yellow" />
-                        Sam's Lemonade
+                        Some guy's account
                     </Header>
                 </header>
                 <nav className={`Sidebar--navigation`}>
