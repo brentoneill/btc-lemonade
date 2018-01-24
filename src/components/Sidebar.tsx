@@ -33,14 +33,14 @@ class Sidebar extends React.Component<ISidebarProps, ISidebarState> {
             return navigationLinks.map(link => {
                 const { route, label, icon } = link;
                 return (
-                    <List.Item key={label}>
-                        <List.Content>
-                            <Link className="block" activeClassName="active" to={route}>
-                            {link.icon && this.renderIcon(icon)}
-                            {label}
-                            </Link>
-                        </List.Content>
-                    </List.Item>
+                    <Link className="block" activeClassName="active" to={route} key={label}>
+                        <List.Item >
+                            <List.Content>
+                                {link.icon && this.renderIcon(icon)}
+                                {label}
+                            </List.Content>
+                        </List.Item>
+                    </Link>
                 );
             });
         } else {

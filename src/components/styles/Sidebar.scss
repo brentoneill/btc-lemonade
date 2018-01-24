@@ -27,7 +27,10 @@
             font-weight: 300;
             color: $gray-light;
             opacity: .7;
-            transition: opacity .15s ease-out;
+            transition: all .15s ease-out;
+            &:hover {
+              padding-left: 1em;
+            }
 
             &.active {
                 opacity: 1;

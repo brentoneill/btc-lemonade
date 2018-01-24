@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LineChart, Line, CartesianGrid, YAxis, XAxis } from 'recharts';
+import { LineChart, Line, CartesianGrid, YAxis, XAxis, Tooltip } from 'recharts';
 
 interface IStatsProps {}
 
@@ -7,6 +7,7 @@ interface IStatsState {}
 
 export default class Stats extends React.Component<IStatsProps, IStatsState> {
     render() {
+
         const data = [
             { name: 'pageA', value: 400 },
             { name: 'pageB', value: 300 },
@@ -15,6 +16,7 @@ export default class Stats extends React.Component<IStatsProps, IStatsState> {
             { name: 'pageE', value: 350 },
             { name: 'pageF', value: 100 }
         ];
+
         return (
             <div className="Stats">
                Stats
@@ -24,6 +26,7 @@ export default class Stats extends React.Component<IStatsProps, IStatsState> {
                  <CartesianGrid stroke="#ccc" />
                  <XAxis dataKey="name" />
                  <YAxis />
+                 <Tooltip />
                 </LineChart>
                </div>
             </div>
