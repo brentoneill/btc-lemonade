@@ -27,8 +27,8 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
 
     public socketBitStamp;
 
-    private tradesChannel;
-    private subscribeString: string;
+    private _tradesChannel;
+    private _subscribeString: string;
     private _ismounted: boolean;
 
     constructor(props: IBitcoinTickerProps) {
@@ -41,17 +41,19 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
         this.socketBitStamp = new Pusher('de504dc5763aeef9ff52');
 
         if (this.props.currencyPair === 'btcusd') {
-            this.subscribeString = 'live_trades';
+            this._subscribeString = 'live_trades';
         } else {
-            this.subscribeString = `live_trades_${this.props.currencyPair}`;
+            this._subscribeString = `live_trades_${this.props.currencyPair}`;
         }
 
-        this.tradesChannel = this.socketBitStamp.subscribe(this.subscribeString);
+        this._tradesChannel = this.socketBitStamp.subscribe(this._subscribeString);
     }
 
     componentWillMount() {
         this._ismounted = true;
+
         const { currencyPair } = this.props;
+
         switch (currencyPair) {
             case 'btcusd':
                 // Initialize the price
@@ -69,7 +71,7 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
         }
 
         // Bind an event to the 'trade' event on the live_trades channel
-        this.tradesChannel.bind('trade', data => {
+        this._tradesChannel.bind('trade', data => {
             if (this.props.onChange && this.state.currentPrice !== data.price ) {
                 this.props.onChange(data);
             }
@@ -93,7 +95,7 @@ export default class BitcoinTicker extends React.Component<IBitcoinTickerProps, 
 
     componentWillUnmount() {
         this._ismounted = false;
-        this.socketBitStamp.unsubscribe(this.subscribeString);
+        this.socketBitStamp.unsubscribe(this._subscribeString);
         this.socketBitStamp.disconnect();
     }
 

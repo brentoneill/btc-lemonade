@@ -3,7 +3,7 @@ import autobind from 'autobind-decorator';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Modal, Icon, Input } from 'semantic-ui-react';
-import {toastr} from 'react-redux-toastr';
+import { toastr } from 'react-redux-toastr';
 
 import { generateNewAddress, addAddress } from '../actions';
 
@@ -71,7 +71,7 @@ class Header extends React.PureComponent<IProps, IState> {
 
         return (
             <header className={cssClasses}>
-                <h2 style={{ float: 'left' }}>Dashboard</h2>
+                <h2 style={{ float: 'left' }}></h2>
                 <Button primary
                         onClick={() => { this.setState({ modalOpen: true }); }}
                         floated={'right'}

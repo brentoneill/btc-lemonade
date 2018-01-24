@@ -28,9 +28,6 @@
             color: $gray-light;
             opacity: .7;
             transition: all .15s ease-out;
-            &:hover {
-              padding-left: 1em;
-            }
 
             &.active {
                 opacity: 1;
@@ -43,6 +40,7 @@
         }
 
         a:hover {
+            padding-left: 1em;
             opacity: 1;
             .icon {
                 opacity: .8;
