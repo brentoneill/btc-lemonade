@@ -67,13 +67,12 @@ class Stats extends React.Component<IStatsProps, IStatsState> {
 
         return (
             <div className="Stats">
-               Stats
                <div>
-               <LineChart width={600} height={300} data={data}>
+               <LineChart width={800} height={500} data={data}>
                  <Line type="monotone" dataKey="btcUSD" stroke="#8884d8" />
                  <CartesianGrid stroke="#ccc" />
                  <XAxis dataKey="updatedTime" />
-                 <YAxis />
+                 <YAxis domain={['dataMin', 'dataMax']} />
                  <Tooltip />
                 </LineChart>
                </div>
